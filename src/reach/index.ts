@@ -1,6 +1,6 @@
 import { loadStdlib } from "@reach-sh/stdlib";
 import { NETWORKS, NETWORK_STORAGE_KEY, PROVIDERS } from "./constants";
-import { NetworkData, ReachStdLib } from "types/shared";
+import { NetworkData, ReachStdLib } from "./reach-types";
 import ReachStore from "./store";
 
 /** `StdLib` instance */
@@ -41,7 +41,7 @@ export function getAllNetworks(): NetworkData[] {
 export function getCurrentNetwork(): string {
   const defaultNetwork = NETWORKS.ALGO.abbr;
   const stored = localStorage.getItem(NETWORK_STORAGE_KEY);
-  return stored ? stored : setCurrentNetwork(defaultNetwork);
+  return stored || setCurrentNetwork(defaultNetwork);
 }
 
 /** Determine whether app should run on `MainNet` or `TestNet` */

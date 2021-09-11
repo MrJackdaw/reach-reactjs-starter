@@ -1,4 +1,4 @@
-import { NetworkData } from "types/shared";
+import { NetworkData } from "./reach-types";
 
 export const NETWORK_STORAGE_KEY = "network";
 

@@ -1,8 +1,9 @@
 import createState from "@jackcom/raphsducks";
 
-/** Your global application state. Add any properties you need here */
+/** Your global application state. Add/remove any properties you need here */
 const store = createState({
-  connected: false,
+  /** `DEMO:` a globally-shared counter value */
+  globalCount: 0,
 });
 
 export default store;
