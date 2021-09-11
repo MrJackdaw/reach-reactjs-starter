@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { noOp } from "utils/index";
-import "./ListView.scss";
 
 type ListViewProps = {
   data: any[];
@@ -9,14 +8,17 @@ type ListViewProps = {
   row?: boolean;
   itemText: (d: any) => string | JSX.Element;
   onItemClick?: (d: any) => any | void;
-} & React.ComponentPropsWithRef<any>;
+} & React.PropsWithChildren<any>;
 
 const flexStyles = `display: flex;`;
-const UnorderedList = styled.ul``;
+const UnorderedList = styled.ul`
+  list-style: none;
+  margin: 0;
+  padding: ${({ theme }) => theme.sizes.sm};
+`;
 const OrderedList = styled.ol<ListViewProps>`
   ${flexStyles}
   flex-direction: ${({ row }) => (row ? "row" : "column")};
-
   > * {
     width: 100%;
   }
@@ -30,7 +32,7 @@ const ListView = (props: ListViewProps): JSX.Element => {
   const { data, itemText, onItemClick = noOp, ordered, ...rest } = props;
   const children = data.map((item: any, i: number) => (
     <ListViewItem key={i} onClick={() => onItemClick(item)}>
-      {itemText(item)}
+      {itemText(item, i)}
     </ListViewItem>
   ));
 

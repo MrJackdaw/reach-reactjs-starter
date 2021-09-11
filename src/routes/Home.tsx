@@ -1,11 +1,17 @@
+import { FlexColumn } from "components/Common/Containers";
 import React, { useEffect } from "react";
 import store from "state";
+import styled from "styled-components";
 import Button from "../components/Forms/Button";
 
 const links = [
   { href: "https://reactjs.org", text: "Learn React" },
   { href: "https://docs.reach.sh/index.html", text: "Reach Lang Docs" },
 ];
+
+const HomeContainer = styled(FlexColumn)`
+  padding: ${({ theme }) => theme.sizes.sm};
+`;
 
 const Home = () => {
   const [state, setState] = React.useState(store.getState());
@@ -16,7 +22,7 @@ const Home = () => {
   useEffect(() => store.subscribe(onAppState));
 
   return (
-    <section className="Home">
+    <HomeContainer className="Home">
       <h4>Home.jsx</h4>
 
       <p>
@@ -49,7 +55,7 @@ const Home = () => {
       </p>
 
       <Button onClick={resetAppState}>Reset App State</Button>
-    </section>
+    </HomeContainer>
   );
 };
 export default Home;

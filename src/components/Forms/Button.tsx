@@ -3,11 +3,12 @@ import styled from "styled-components";
 
 const ButtonBase = styled.button`
   align-items: center;
-  border: 0;
   border-radius: ${({ theme }) => theme.presets.rounded};
+  border: 0;
   cursor: pointer;
   display: flex;
   padding: ${({ theme }) => theme.sizes.sm};
+  place-content: center;
 `;
 
 export default function Button(props: React.ComponentPropsWithRef<"button">) {

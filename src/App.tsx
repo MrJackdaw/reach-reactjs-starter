@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import "./App.css";
 import store from "state/index";
@@ -8,6 +8,8 @@ import routes from "routes/index";
 import appTheme from "theme";
 import FullScreenLoader from "components/Common/FullscreenLoader";
 import Button from "components/Forms/Button";
+import { FlexRow } from "components/Common/Containers";
+import AppNav from "AppNav";
 
 function App() {
   // Demo: Local vs global state
@@ -37,7 +39,7 @@ function App() {
               <img src={logo} className="App-logo" alt="logo" />
               <p>Hello Vite, React, and Reach!</p>
 
-              <p>
+              <FlexRow>
                 <Button onClick={setLocalCount}>
                   <b>
                     <code>App.jsx</code> count
@@ -48,27 +50,14 @@ function App() {
                 <Button onClick={setGlobalCount}>
                   <b>Global count</b>: {gCount}
                 </Button>
-              </p>
+              </FlexRow>
 
-              <Button onClick={() => store.reset()}>
+              <Button disabled={gCount === 0} onClick={() => store.reset()}>
                 <b>Reset Global State</b>
               </Button>
 
-              {/* Navigation */}
-              <nav>
-                <h4>App Routes</h4>
-
-                <ul style={{ padding: 0 }}>
-                  {routes.map((link, i) => (
-                    <li
-                      key={i}
-                      style={{ display: "inline", paddingRight: "0.5rem" }}
-                    >
-                      <Link to={link.path}>{link.text}</Link>
-                    </li>
-                  ))}
-                </ul>
-              </nav>
+              {/* Navigation Menu */}
+              <AppNav />
             </div>
 
             {/* Routes */}

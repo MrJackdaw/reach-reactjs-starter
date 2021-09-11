@@ -10,7 +10,7 @@ const routes: RouteDef[] = [
 
 export default routes;
 
-interface RouteDef {
+export interface RouteDef {
   path: string;
   text: string;
   component?: any;
