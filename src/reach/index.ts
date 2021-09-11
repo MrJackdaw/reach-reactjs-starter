@@ -24,9 +24,6 @@ export const useReach = () => {
   return reach;
 };
 
-/** Updates global `Reach` config settings */
-export function setReach(): void {}
-
 /** Get a UI-friendly list of Networks */
 export function getAllNetworks(): NetworkData[] {
   const activeNetwork = getCurrentNetwork();
