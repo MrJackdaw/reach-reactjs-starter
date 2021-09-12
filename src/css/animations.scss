@@ -1,0 +1,272 @@
+/******************************************
+*  File : Animations.scss
+*******************************************/
+@keyframes beacon {
+  0% {
+    transform: scale(1, 1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(4, 4);
+    opacity: 0;
+  }
+}
+
+@keyframes bounce {
+  0% {
+    transform: translateY(4px);
+  }
+  50% {
+    transform: translateY(-16px);
+  }
+  100% {
+    transform: translateY(4px);
+  }
+}
+
+@keyframes bounce-in-left {
+  0% {
+    transform: translate(-10%, 0);
+    opacity: 0.25;
+  }
+  25% {
+    transform: translate(8%, 0);
+    opacity: 0.65;
+  }
+  50% {
+    transform: translate(-4%, 0);
+    opacity: 0.75;
+  }
+  75% {
+    transform: translate(2%, 0);
+    opacity: 0.95;
+  }
+  100% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+}
+
+@keyframes collapse-horizontal {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}
+
+@keyframes collapse-vertical {
+  from {
+    transform: scaleY(1);
+  }
+  to {
+    transform: scaleY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1, 1);
+  }
+  50% {
+    transform: scale(2, 2);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}
+
+@keyframes scale-in {
+  0% {
+    transform: scale(0, 0);
+    opacity: 0.25;
+  }
+  100% {
+    transform: scale(1, 1);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-down {
+  from {
+    transform: translate(0, -10%);
+  }
+  to {
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes slide-in-bottom-right {
+  from {
+    transform: translate(10%, 10%);
+    opacity: 0.25;
+  }
+  to {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-right {
+  from {
+    transform: translate(0%, 0);
+  }
+  to {
+    transform: translate(10%, 0);
+  }
+}
+
+@keyframes slide-left {
+  from {
+    transform: translate(0%, 0);
+  }
+  to {
+    transform: translate(-10%, 0);
+  }
+}
+
+@keyframes slide-up {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(0, -10%);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Animation Mixins */
+@mixin collapse($horizontal: true, $duration: 200ms) {
+  @if $horizontal {
+    animation: collapse-horizontal $duration ease-out;
+  } @else {
+    animation: collapse-vertical $duration ease-out;
+  }
+}
+@mixin expand($horizontal: true, $duration: 200ms) {
+  @if $horizontal {
+    animation: expand-horizontal 200ms ease-out;
+  } @else {
+    animation: expand-horizontal 200ms ease-out;
+  }
+}
+@mixin fade($out: true, $duration: 200ms) {
+  animation: fade $duration ease-out;
+
+  @if $out {
+    animation-direction: reverse;
+  }
+}
+@mixin merge-animations($a1, $a2, $d1: 200ms, $d2: 200ms) {
+  animation: $a1 $d1 ease-out, $a2 $d1 ease-out;
+  animation-fill-mode: forwards;
+}
+@mixin spin {
+  animation: spin 20s linear infinite;
+}
+@mixin spinner($size: 1rem) {
+  animation: spin 0.8s linear infinite;
+  border-radius: 50%;
+  border: 0.3rem solid;
+  border-top-color: transparent;
+  content: "";
+  display: inline-block;
+  height: $size;
+  left: 48%;
+  top: 40%;
+  transform-origin: center;
+  width: $size;
+}
+
+/* Classes */
+.after-spinner::after,
+.before-spinner::before {
+  @include spinner;
+}
+.beacon {
+  animation: beacon 200ms ease-out;
+  animation-iteration-count: infinite;
+}
+.bounce {
+  animation: bounce 200ms ease-in-out;
+}
+.bounce-in-left {
+  animation: bounce-in-left 200ms ease-out;
+}
+.collapse-horizontal {
+  @extend .expand-horizontal;
+}
+.collapse-vertical {
+  @extend .expand-vertical;
+  animation-direction: reverse;
+}
+.expand-horizontal {
+  @include collapse($horizontal: true);
+  animation-direction: reverse;
+}
+.expand-vertical {
+  @include collapse($horizontal: false);
+  animation-direction: reverse;
+}
+.fade-in {
+  @include fade($out: false);
+}
+.fade-out {
+  @extend .fade-in;
+  animation-direction: reverse;
+}
+.pulse {
+  animation: pulse 200ms ease-out;
+}
+.scale-in {
+  animation: scale-in 200ms ease-out;
+}
+.scale-in-bounce {
+  @include merge-animations(scale-in, bounce, 200ms);
+}
+.slide-down-fade-in {
+  @include merge-animations(slide-down, fade-in);
+}
+.slide-in-bottom-right {
+  animation: slide-in-bottom-right 200ms ease-out;
+}
+.slide-in-left {
+  @include merge-animations(slide-right, fade-in);
+}
+.slide-in-right {
+  @include merge-animations(slide-left, fade-in);
+}
+.slide-out-left {
+  @include merge-animations(slide-left, fade-out);
+}
+.slide-out-right {
+  @extend .slide-in-right;
+  animation-direction: reverse;
+}
+.slide-up-fade-in {
+  @include merge-animations(slide-up, fade-in, 200ms);
+}
+.slide-up-fade-out {
+  @include merge-animations(slide-up, fade-out, 200ms);
+}
+.spin {
+  @include spin;
+}

@@ -2,12 +2,12 @@
 const sizes = {
   xxs: "0.125rem",
   xs: "0.3rem",
-  sm: "0.5rem",
-  default: "",
-  md: "",
-  lg: "",
-  xlg: "",
-  xxlg: "",
+  sm: "0.6rem",
+  default: "1rem",
+  md: "1.4rem",
+  lg: "2.1rem",
+  xlg: "2.6rem",
+  xxlg: "3.2rem",
 };
 
 /* Global Application Style Theme */
@@ -15,7 +15,7 @@ const appTheme = {
   colors: {
     accent: "",
     error: "",
-    primary: "",
+    primary: "#282c34",
     secondary: "",
     warning: "",
   },

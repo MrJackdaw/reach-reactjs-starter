@@ -10,14 +10,19 @@ type ListViewProps = {
   onItemClick?: (d: any) => any | void;
 } & React.PropsWithChildren<any>;
 
-const flexStyles = `display: flex;`;
-const UnorderedList = styled.ul`
+
+const UnorderedList = styled.ul<ListViewProps>`
+  display: flex;
+  flex-direction: ${({ row }) => (row ? "row" : "column")};
   list-style: none;
   margin: 0;
   padding: ${({ theme }) => theme.sizes.sm};
+  > * {
+    padding:  ${({ theme }) => `0 ${theme.sizes.sm}`};
+  }
 `;
 const OrderedList = styled.ol<ListViewProps>`
-  ${flexStyles}
+  display: flex;
   flex-direction: ${({ row }) => (row ? "row" : "column")};
   > * {
     width: 100%;

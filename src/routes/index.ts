@@ -2,10 +2,11 @@ import React from "react";
 
 /**
  * Application Routes here.
- * Note: this can also be used to populate a global application nav bar
+ * Note: this auto-populates your application nav bar. 
  */
 const routes: RouteDef[] = [
   { path: "/", text: "Home", component: React.lazy(() => import("./Home")) },
+  { path: "/demo", text: "Demo", component: React.lazy(() => import("./Demo")) },
 ];
 
 export default routes;

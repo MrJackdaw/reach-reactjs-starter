@@ -1,0 +1,17 @@
+@import "css/mixins.scss";
+@import "css/reset.scss";
+@import "css/animations.scss";
+
+.App {
+  text-align: center;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: spin infinite 20s linear;
+  }
+}
+
+.App-link {
+  color: #61dafb;
+}

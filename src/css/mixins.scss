@@ -1,0 +1,85 @@
+/* Sizes (all) */
+
+$xxxlg: 5.25rem;
+$xxlg: 3.2rem;
+$xlg: 2.8rem;
+$lg: 2.4rem;
+$md: 1.4rem;
+$sm: 0.9rem;
+$xs: 0.8rem;
+$xxs: 0.5rem;
+$xxxs: 0.25rem;
+$tiny: 0.12rem;
+$xtiny: 0.05rem;
+
+@mixin hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@mixin line-clamp($lines) {
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+@mixin sticky($top: 0) {
+  position: sticky;
+  top: $top;
+  z-index: 999;
+}
+
+@mixin ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: $parent;
+}
+
+@mixin app-font {
+  font-family: "Open Sans", sans-serif;
+  letter-spacing: 0.04rem;
+}
+
+@mixin heading-font() {
+  font-family: "Open Sans", sans-serif;
+}
+
+@mixin h1 {
+  @include heading(3.5rem);
+}
+
+@mixin h2 {
+  @include heading(2.6rem);
+}
+
+@mixin h3 {
+  @include heading(1.8rem);
+}
+
+@mixin h4 {
+  @include heading(1.4rem);
+}
+
+@mixin h5 {
+  @include heading(1.2rem);
+}
+
+@mixin h6 {
+  @include heading(0.995rem);
+  font-weight: bolder;
+  line-height: 1.125rem;
+}
+
+@mixin heading($font-size: 1.2rem) {
+  @include heading-font();
+  font-weight: 600;
+  font-size: $font-size;
+  line-height: $font-size;
+}
