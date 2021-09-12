@@ -27,7 +27,7 @@ const Home = () => {
         <b>
           <code> Route </code>
         </b>{" "}
-        in your application.
+        in your application. Look at <b>routes/Home.tsx</b> to see how it works.
       </p>
 
       <p>

@@ -1,2 +1,2 @@
-export const noOp = () => null;
 export const a = null;
+export const noOp = () => null;
