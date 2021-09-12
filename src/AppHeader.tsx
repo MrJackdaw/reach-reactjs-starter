@@ -7,8 +7,8 @@ import { Link } from "react-router-dom";
 const HeaderContainer = styled(FlexRow)`
   background-color: ${({ theme }) => theme.colors.primary};
   color: white;
-  justify-content: space-between;
   height: 10vmin;
+  justify-content: space-between;
 
   .logo {
     height: 10vmin;

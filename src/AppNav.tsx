@@ -1,9 +1,13 @@
 import ListView from "components/Common/ListView";
+import ConnectWallet from "components/Reach/ConnectWallet";
 import { Link } from "react-router-dom";
 import routes from "routes/index";
 import styled from "styled-components";
 
-const Menu = styled.nav``;
+const Menu = styled.nav`
+  align-items: center;
+  display: flex;
+`;
 
 const AppNav = () => (
   <Menu className="app-menu">
@@ -14,6 +18,8 @@ const AppNav = () => (
       data={routes}
       itemText={({ path, text }: any) => <Link to={path}>{text}</Link>}
     />
+
+    <ConnectWallet />
   </Menu>
 );
 

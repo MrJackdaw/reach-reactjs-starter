@@ -21,7 +21,7 @@ export type NetworkData = {
 };
 
 /** StdLib Helper Interface */
-export type ReachStdLib = StdLibUser<any> & {
+export type ReachStdLib = StdLibUser<{[x:string]: any}> & {
   /* Properties */
   atomicUnit: string;
   connector: string;
@@ -65,6 +65,7 @@ export type ReachStdLib = StdLibUser<any> & {
   parseCurrency(amt: string | any): BigNumber;
   providerEnvByName(prv: "TestNet"): any;
   setProviderByName(prv: string): void;
+//   setSignStrategy(strg: string): void;
   stringToHex(s: string): string;
   transfer(
     from: ReachAccount,

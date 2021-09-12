@@ -6,8 +6,9 @@ const ButtonBase = styled.button`
   border-radius: ${({ theme }) => theme.presets.rounded};
   border: 0;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   padding: ${({ theme }) => theme.sizes.sm};
+  margin: 0 ${({ theme }) => theme.sizes.sm};
   place-content: center;
 `;
 

@@ -1,4 +1,5 @@
 import { FlexColumn, FlexRow } from "components/Common/Containers";
+import ReachStore from "reach/store";
 import React, { useEffect } from "react";
 import store from "state";
 import Button from "../components/Forms/Button";
@@ -10,7 +11,10 @@ const links = [
 
 const Home = () => {
   const [state, setState] = React.useState(store.getState());
-  const resetAppState = () => store.reset();
+  const resetAppState = () => {
+    store.reset();
+    ReachStore.reset();
+  };
   // React to global state change
   const onAppState = (newState: any) =>
     setState((oldState) => ({ ...oldState, ...newState }));

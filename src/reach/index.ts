@@ -1,6 +1,7 @@
 import { loadStdlib } from "@reach-sh/stdlib";
+import MyAlgoConnect from "@reach-sh/stdlib/ALGO_MyAlgoConnect";
 import { NETWORKS, NETWORK_STORAGE_KEY, PROVIDERS } from "./constants";
-import { NetworkData, ReachStdLib } from "./reach-types";
+import { NetworkData, ReachAccount, ReachStdLib } from "./reach-types";
 import ReachStore from "./store";
 
 /** `StdLib` instance */
@@ -13,9 +14,13 @@ export const useReach = () => {
     reach = loadStdlib(getCurrentNetwork());
 
     try {
-      // Force app to use browser extension to connect: skip ETH
-      if (reach.connector !== NETWORKS.ETH.abbr)
-        reach.setProviderByName(getNetworkProvider());
+      // use MyAlgoWallet for Algorand network | ETH will default to MetaMask
+      if (reach.connector === NETWORKS.ALGO.abbr) {
+        const providerEnv = getNetworkProvider();
+        reach.setWalletFallback(
+          reach.walletFallback({ providerEnv, MyAlgoConnect })
+        );
+      }
     } catch (e) {
       ReachStore.error(`Error setting provider: ${JSON.stringify(e, null, 2)}`);
     }
@@ -23,6 +28,57 @@ export const useReach = () => {
 
   return reach;
 };
+
+export async function createTestAccount() {
+  if (!reach) useReach();
+
+  try {
+    ReachStore.loading(true);
+
+    const account = await reach.newTestAccount(0);
+    const balance = await reach.balanceOf(account);
+    const { notifications } = ReachStore.getState();
+    const updates = [...notifications!, "Account created!"];
+
+    ReachStore.multiple({
+      account,
+      balance,
+      notifications: updates,
+      loading: false,
+    });
+  } catch (e: any) {
+    const msg = JSON.stringify(e.message || e, null, 2);
+    ReachStore.multiple({
+      error: `Error creating new account: ${msg}`,
+      loading: false,
+    });
+  }
+}
+
+/**
+ * Connect user Wallet (MyAlgoWallet)
+ */
+export async function connectWallet() {
+  if (!reach) useReach();
+
+  try {
+    ReachStore.loading(true);
+    const account: ReachAccount = await reach.getDefaultAccount();
+    const balance = reach.formatCurrency(await reach.balanceOf(account), 4);
+    // Notify user
+    const { notifications } = ReachStore.getState();
+    const updates = [...notifications!, "Account connected!"];
+    ReachStore.multiple({
+      address: reach.formatAddress(account.getAddress()),
+      account,
+      balance,
+      notifications: updates,
+      loading: false,
+    });
+  } catch (e: any) {
+    ReachStore.error(e.message || e);
+  }
+}
 
 /** Get a UI-friendly list of Networks */
 export function getAllNetworks(): NetworkData[] {

@@ -185,7 +185,7 @@
 @mixin spinner($size: 1rem) {
   animation: spin 0.8s linear infinite;
   border-radius: 50%;
-  border: 0.3rem solid;
+  border: 0.12rem solid;
   border-top-color: transparent;
   content: "";
   display: inline-block;
@@ -197,9 +197,20 @@
 }
 
 /* Classes */
-.after-spinner::after,
-.before-spinner::before {
+.spinner--after,
+.spinner--before{
+  align-items: center;
+  display: inline-flex;
+}
+.spinner--after::after,
+.spinner--before::before {
   @include spinner;
+}
+.spinner--after::after{
+  margin-left: 0.3rem;
+}
+.spinner--before::before {
+  margin-right: 0.3rem;
 }
 .beacon {
   animation: beacon 200ms ease-out;
