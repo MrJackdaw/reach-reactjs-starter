@@ -10,11 +10,13 @@ If you need to add or modify Webpack config overrides, consider using [@craco](h
 * [ReactJS](https://github.com/facebook/create-react-app) with [Typescript support](https://www.typescriptlang.org/): A popular front-end framework for building web applications 
 * [Reach Language](https://docs.reach.sh/): A compiled language for building multi-chain smart contracts. This template includes **the JS dependency**, and [not the CLI](#installing-the-reach-cli).
 * [RaphsDucks](https://github.com/JACK-COM/raphsducks): a simplified, unopinonated application state manager.
+* [Cryptocurrency Icons](https://github.com/spothq/cryptocurrency-icons) as well as a single-file API (and ReactJS component) for using them
 * [Google's Material Icons](https://fonts.google.com/icons) for quick UI sugar
+* SASS support
 
-Like the ReactJS version, this includes support for SASS. There are no pre-defined styles: you can `npm install` any additional dependencies.
+There are no pre-defined styles: you can `npm install` any additional dependencies.
 
-
+---
 ## How do I use it?
 
 1. Clone the project
@@ -24,15 +26,14 @@ Like the ReactJS version, this includes support for SASS. There are no pre-defin
 
 Take a look at [Available Scripts](#available-scripts) for additional CLI commands.
 
-### Installing the Reach CLI
-
-The scaffold doesn't include the `reach-sh` cli, so (if you don't already have that globally) you will need to install that. If you are using a linux based system, I recommend you `cd` into a directory in your `$PATH` variable (e.g. `/usr/local/bin/`) and follow Reach-sh's instructions to install the CLI there. This should allow you to run 
-
-```
-$: reach < command >
-```
-
-from any terminal instance, although you will have to go back in there to update it. 
+### Reach Helpers
+This project includes some helpful bits, including 
+* A self-contained `Reach` state for handling authentication.\
+    It uses `raphsducks`, so you can subscribe to it like any other state.
+* A `connect` button that will automatically trigger a wallet connection.
+    Default network is Algorand, but you can set it to `ETH` and it should trigger MetaMask by default.
+* A [light API](src/reach/README.md) for interacting with your `@reach/stdlib` instance. You can build this out as needed.
+* A stub Reach application, so you can get started building your multichain smart contracts.
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). 
