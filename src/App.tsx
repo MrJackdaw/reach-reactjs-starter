@@ -13,6 +13,7 @@ function App() {
       <React.Suspense fallback={<FullScreenLoader />}>
         <Router>
           <section className="App">
+            {/* App Header */}
             <AppHeader />
 
             {/* Routes */}
