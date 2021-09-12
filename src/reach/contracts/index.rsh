@@ -3,4 +3,6 @@
 export const main = Reach.App(() => {
   const A = Participant("A", {});
   deploy();
+
+  // App details go here
 });
