@@ -37,13 +37,11 @@ export async function createTestAccount() {
 
     const account = await reach.newTestAccount(0);
     const balance = await reach.balanceOf(account);
-    const { notifications } = ReachStore.getState();
-    const updates = [...notifications!, "Account created!"];
 
     ReachStore.multiple({
       account,
-      balance,
-      notifications: updates,
+      balance: reach.bigNumberToNumber(balance),
+      notification: "Account created!",
       loading: false,
     });
   } catch (e: any) {
@@ -66,13 +64,11 @@ export async function connectWallet() {
     const account: ReachAccount = await reach.getDefaultAccount();
     const balance = reach.formatCurrency(await reach.balanceOf(account), 4);
     // Notify user
-    const { notifications } = ReachStore.getState();
-    const updates = [...notifications!, "Account connected!"];
     ReachStore.multiple({
       address: reach.formatAddress(account.getAddress()),
       account,
       balance,
-      notifications: updates,
+      notification: "Account connected!",
       loading: false,
     });
   } catch (e: any) {

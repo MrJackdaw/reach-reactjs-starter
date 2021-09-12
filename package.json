@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@jackcom/raphsducks": "^1.1.0",
+    "@jackcom/raphsducks": "^1.1.1",
     "@reach-sh/stdlib": "^0.1.4-rc.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",

@@ -45,7 +45,7 @@ export type ReachStdLib = StdLibUser<{[x:string]: any}> & {
   balanceOf(acc: ReachAccount, token?: any): Promise<BigNumber>;
   bigNumberToHex(uInt: BigNumber): string;
   bigNumberify(uInt: number | BigNumber): BigNumber;
-  // bigNumberToNumber(num: any) BigNumber
+//   bigNumberToNumber(num: any): any
   bytesEq(a: string, b: string): boolean;
   connectAccount(acc: any & { addr: string }): Promise<ReachAccount>;
   createAccount(): Promise<ReachAccount>;
@@ -77,4 +77,4 @@ export type ReachStdLib = StdLibUser<{[x:string]: any}> & {
   wait(delta: BigNumber): Promise<BigNumber>;
   waitUntilSecs(secs: BigNumber): Promise<BigNumber>;
   waitUntilTime(time: BigNumber): Promise<BigNumber>;
-};
+} & {[x:string]: any};
