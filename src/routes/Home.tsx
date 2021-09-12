@@ -1,3 +1,4 @@
+import { Face } from "@material-ui/icons";
 import { FlexColumn, FlexRow } from "components/Common/Containers";
 import ReachStore from "reach/store";
 import React, { useEffect } from "react";
@@ -38,6 +39,10 @@ const Home = () => {
         This route is linked up to the global state. You can modify or remove it
         if not needed
       </p>
+
+      <FlexColumn>
+        This project supports <b>Material Icons</b><Face />
+      </FlexColumn>
 
       <p>
         <b>Global Count:</b> <span>{state.globalCount}</span>
