@@ -23,7 +23,8 @@ const appTheme = {
   borders: {},
 
   presets: {
-    rounded: '4px'
+    elevated: "0 1px 3px #282c34",
+    rounded: "4px",
   },
 
   sizes,

@@ -1,0 +1,10 @@
+# Ignore/Don't lint the following files 
+*.rsh
+*.po
+*.yml
+*.md
+*.scss
+Makefile
+Dockerfile
+src/reach/*.*
+src/reach/*

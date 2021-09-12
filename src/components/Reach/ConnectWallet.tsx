@@ -1,10 +1,10 @@
+import { useEffect, useState } from "react";
 import { WalletConnectionProps } from "types/shared";
 import { connectWallet } from "reach";
 import ReachStore from "reach/store";
 import { truncateAccountString } from "reach/utils";
 // Views
 import Button from "components/Forms/Button";
-import { useEffect, useState } from "react";
 
 const ConnectWallet = () => {
   const [state, setState] = useState<WalletConnectionProps>({});
@@ -18,18 +18,21 @@ const ConnectWallet = () => {
       {truncateAccountString(state.address!)}
     </Button>
   ) : (
-    <Button onClick={connectWallet}>
-      {state.error ? (
-        "Connect Error"
-      ) : (
-        <>
-          {state.loading && (
-            <span className="spinner--before">Loading ...</span>
-          )}
-          {!state.loading && "Connect Wallet"}
-        </>
-      )}
-    </Button>
+    <>
+      <Button onClick={connectWallet}>
+        {state.error && "Connect Error"}
+
+        {!state.error && (
+          <>
+            {state.loading ? (
+              <span className="spinner--before">Loading ...</span>
+            ) : (
+              "Connect Wallet"
+            )}
+          </>
+        )}
+      </Button>
+    </>
   );
 };
 
