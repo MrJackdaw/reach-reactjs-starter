@@ -12,7 +12,7 @@ const ReachStore = createState({
   address: "",
 
   /** Reach `networkAccount` instance */
-  account: (null as any|null),
+  account: null as any | null,
 
   /** Reach `networkAccount` instance */
   accountsList: [] as any[],
@@ -24,13 +24,13 @@ const ReachStore = createState({
   currentNetwork: NETWORKS.ALGO.abbr,
 
   /** Error messages */
-  error: "",
+  error: null as string | null,
 
   /** Loading state */
   loading: false,
 
   /** Notifications */
-  notification: "",
+  notification: null as string | null,
 
   /** List of notifications (for multiple simulataneus notices) */
   notifications: [] as string[],
