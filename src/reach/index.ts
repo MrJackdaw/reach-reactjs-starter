@@ -11,7 +11,9 @@ let reach: ReachStdLib;
 export const useReach = () => {
   if (!reach) {
     // Instantiate Reach object
-    reach = loadStdlib(getCurrentNetwork());
+    reach = loadStdlib({
+      REACH_CONNECTOR_MODE: getCurrentNetwork(),
+    });
 
     try {
       // use MyAlgoWallet for Algorand network | ETH will default to MetaMask
@@ -28,30 +30,6 @@ export const useReach = () => {
 
   return reach;
 };
-
-export async function createTestAccount() {
-  if (!reach) useReach();
-
-  try {
-    ReachStore.loading(true);
-
-    const account = await reach.newTestAccount(0);
-    const balance = await reach.balanceOf(account);
-
-    ReachStore.multiple({
-      account,
-      balance: reach.bigNumberToNumber(balance),
-      notification: "Account created!",
-      loading: false,
-    });
-  } catch (e: any) {
-    const msg = JSON.stringify(e.message || e, null, 2);
-    ReachStore.multiple({
-      error: `Error creating new account: ${msg}`,
-      loading: false,
-    });
-  }
-}
 
 /**
  * Connect user Wallet (MyAlgoWallet)
@@ -98,11 +76,9 @@ export function getCurrentNetwork(): string {
 
 /** Determine whether app should run on `MainNet` or `TestNet` */
 export function getNetworkProvider() {
-  return PROVIDERS.TESTNET;
-  // TODO renable testnet/mainnet toggle when we go live
-  // process.env.NODE_ENV === 'production'
-  //   ? PROVIDERS.MAINNET
-  //   : PROVIDERS.TESTNET
+  return process.env.NODE_ENV === "production"
+    ? PROVIDERS.MAINNET
+    : PROVIDERS.TESTNET;
 }
 
 /** Store user network selection for App */

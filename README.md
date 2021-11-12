@@ -38,7 +38,14 @@ This project includes some helpful bits, including
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). 
 
-HMR (Hot module reload) is enabled; aside from **@craco**, the development UX is identical to any **create-react-app**-bootstrapped application. 
+---
+
+**Note:** If you don't have reach installed, run this in your project directory to download it (and make the downloaded item executable)
+```
+  $ curl https://docs.reach.sh/reach -o reach ; chmod +x reach
+```
+
+Learn more [here](https://docs.reach.sh/index.html).
 
 ---
 

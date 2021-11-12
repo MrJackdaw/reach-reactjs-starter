@@ -6,10 +6,47 @@ type BigNumber = any;
 /** A reach-connected Network Account representation */
 export type ReachAccount = {
   networkAccount: { addr?: string; address?: string; [x: string]: any };
+  /** @deprecated - Use `reachAccount.contract(backend)` instead */
+  attach(backend: any, contractInfo: any | Promise<any>): ReachContract;
+  /** @deprecated - Use `reachAccount.contract(backend)` instead */
+  deploy(backend: any | Promise<any>): ReachContract;
+  contract(backend: any, contractInfo?: any): ReachContract;
   getAddress(): string;
   setDebugLabel(label: string): ReachAccount;
   tokenAccept(tokenId: string | number): Promise<void>;
-  tokenMetadata(): Promise<{ [x: string]: any }>;
+  tokenMetadata(tokenId: string | number): Promise<{ [x: string]: any }>;
+};
+
+/** Reach Contract `Participant` member */
+type RCParticipant = {
+  [participantName: string]: (interact: any) => Promise<any>;
+};
+/** Reach Contract `View` member */
+type RCView = { [viewName: string]: { [viewProp: string]: RCFn } };
+/** Reach Contract `API` member */
+type RCApi = { [apiName: string]: { [apiMethod: string]: RCFn } };
+
+type RCFn = {
+  (...args: any[]): Promise<any>;
+};
+
+export type ReachContract = {
+  getInfo(): Promise<any>;
+  getContractAddress(): Promise<string | number>;
+  /** Reach Contract `API` member */
+  a: RCApi;
+  /** Reach Contract `API` member */
+  apis: RCApi;
+  /** Reach Contract `Participant` member */
+  p: RCParticipant;
+  /** Reach Contract `Participant` member */
+  participants: RCParticipant;
+  /** Reach Contract `View` member */
+  v: RCView;
+  /** Reach Contract `View` member */
+  views: RCView;
+  /** @deprecated Get contract `Views`. Use `ctc.views` or `ctc.v` */
+  getViews(): RCView;
 };
 
 /** `NetworkData` describes single network data-item (for e.g. Ethereum) */
@@ -21,60 +58,6 @@ export type NetworkData = {
 };
 
 /** StdLib Helper Interface */
-export type ReachStdLib = StdLibUser<{[x:string]: any}> & {
-  /* Properties */
-  atomicUnit: string;
-  connector: string;
-  minimumBalance: BigNumber;
-  standardUnit: string;
-
-  /* Methods */
-  addressEq(a: string | ReachAccount, b: string | ReachAccount): boolean;
-  // Arithmetic
-  /** Add two values (number, big number, or combo) */
-  add(a: number | BigNumber, b: number | BigNumber): BigNumber;
-  /** Subtract two values (number, big number, or combo) */
-  sub(a: number | BigNumber, b: number | BigNumber): BigNumber;
-  /** Modulo of two values (number, big number, or combo) */
-  mod(a: number | BigNumber, b: number | BigNumber): BigNumber;
-  /** Multiply two values (number, big number, or combo) */
-  mul(a: number | BigNumber, b: number | BigNumber): BigNumber;
-  /** Divide two values (number, big number, or combo) */
-  div(a: number | BigNumber, b: number | BigNumber): BigNumber;
-  /** Others */
-  balanceOf(acc: ReachAccount, token?: any): Promise<BigNumber>;
-  bigNumberToHex(uInt: BigNumber): string;
-  bigNumberify(uInt: number | BigNumber): BigNumber;
-//   bigNumberToNumber(num: any): any
-  bytesEq(a: string, b: string): boolean;
-  connectAccount(acc: any & { addr: string }): Promise<ReachAccount>;
-  createAccount(): Promise<ReachAccount>;
-  digestEq(a: string, b: string): boolean;
-  formatAddress(addr: string): string;
-  formatCurrency(amt: BigNumber, decimals?: number): string;
-  fundFromFaucet(account: ReachAccount, balance: any): Promise<void>;
-  getDefaultAccount(): Promise<ReachAccount>;
-  getNetworkSecs(): void;
-  getNetworkTime(): void;
-  hexToBigNumber(bytes: string): BigNumber;
-  isHex(x: any): boolean;
-  newAccountFromMnemonic(phrase: string): Promise<ReachAccount>;
-  newAccountFromSecret(secret: string): Promise<ReachAccount>;
-  newTestAccount(balance: BigNumber): Promise<ReachAccount>;
-  newTestAccounts(howMany: number, balance: any): Promise<ReachAccount[]>;
-  parseCurrency(amt: string | any): BigNumber;
-  providerEnvByName(prv: "TestNet"): any;
-  setProviderByName(prv: string): void;
-//   setSignStrategy(strg: string): void;
-  stringToHex(s: string): string;
-  transfer(
-    from: ReachAccount,
-    to: ReachAccount,
-    amt: BigNumber,
-    token?: any
-  ): any;
-  uintToBytes(uInt: BigNumber): string;
-  wait(delta: BigNumber): Promise<BigNumber>;
-  waitUntilSecs(secs: BigNumber): Promise<BigNumber>;
-  waitUntilTime(time: BigNumber): Promise<BigNumber>;
-} & {[x:string]: any};
+export type ReachStdLib = StdLibUser<{ [x: string]: any }> & {
+  [x: string]: any;
+};
