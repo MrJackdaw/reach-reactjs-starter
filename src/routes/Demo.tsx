@@ -1,18 +1,18 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import { FlexColumn } from "components/Common/Containers";
 import store from "state";
 import { Link } from "react-router-dom";
 
 const Demo = () => {
-  const [count, setCount] = React.useState(store.getState().globalCount);
-  const onAppState = (newState: any, updatedKeys: string[]) => {
-    if (updatedKeys.includes("globalCount")) {
-      setCount(newState.globalCount);
-    }
+  const gState = store.getState();
+  const { globalCount: gCount } = gState;
+  const [count, setCount] = useState(gCount);
+  const onAppState = ({ globalCount }: Partial<typeof gState>) => {
+    setCount(globalCount || 0);
   };
 
   // Subscribe to global state, and unsubscribe on component unmount
-  React.useEffect(() => store.subscribe(onAppState));
+  useEffect(() => store.subscribeToKeys(onAppState, ["globalCount"]));
 
   return (
     <FlexColumn padded>

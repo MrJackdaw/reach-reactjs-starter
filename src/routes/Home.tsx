@@ -1,7 +1,7 @@
 import { Face } from "@material-ui/icons";
 import { FlexColumn, FlexRow } from "components/Common/Containers";
-import ReachStore from "reach/store";
-import React, { useEffect } from "react";
+import { disconnectUser } from "reach";
+import { useEffect, useState, Fragment } from "react";
 import store from "state";
 import Button from "../components/Forms/Button";
 
@@ -11,14 +11,10 @@ const links = [
 ];
 
 const Home = () => {
-  const [state, setState] = React.useState(store.getState());
-  const resetAppState = () => {
-    store.reset();
-    ReachStore.reset();
-  };
+  const gState = store.getState();
+  const [state, setState] = useState<Partial<typeof gState>>(gState);
   // React to global state change
-  const onAppState = (newState: any) =>
-    setState((oldState) => ({ ...oldState, ...newState }));
+  const onAppState = (s: any) => setState((old) => ({ ...old, ...s }));
 
   // Subscribe to global state, and unsubscribe on component unmount
   useEffect(() => store.subscribe(onAppState));
@@ -27,12 +23,16 @@ const Home = () => {
     <FlexColumn className="Home" padded>
       <h1 className="h2">Home.tsx</h1>
 
+      <FlexColumn>
+        This project supports <b>Material Icons</b>
+        <Face />
+      </FlexColumn>
+
       <p>
-        This is the Home page. It is a{" "}
-        <b>
-          <code> Route </code>
-        </b>{" "}
-        in your application. Look at <b>routes/Home.tsx</b> to see how it works.
+        This is your application&apos;s <b>Home page</b>.
+      </p>
+      <p>
+        Look in <b>routes/Home.tsx</b> to see how it works.
       </p>
 
       <p>
@@ -40,17 +40,13 @@ const Home = () => {
         if not needed
       </p>
 
-      <FlexColumn>
-        This project supports <b>Material Icons</b><Face />
-      </FlexColumn>
-
       <p>
         <b>Global Count:</b> <span>{state.globalCount}</span>
       </p>
 
       <p>
         {links.map(({ text, href }, i) => (
-          <React.Fragment key={i}>
+          <Fragment key={i}>
             <a
               className="App-link"
               href={href}
@@ -60,13 +56,13 @@ const Home = () => {
               {text}
             </a>
             {i < links.length - 1 && " | "}
-          </React.Fragment>
+          </Fragment>
         ))}
       </p>
 
       <FlexRow style={{ placeContent: "center" }}>
         <Button onClick={incAppState}>Increment Global Counter</Button>
-        <Button onClick={resetAppState}>Reset App State</Button>
+        <Button onClick={disconnectUser}>Reset App State</Button>
       </FlexRow>
     </FlexColumn>
   );

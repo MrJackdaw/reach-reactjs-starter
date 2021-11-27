@@ -1,18 +1,29 @@
-import React from "react";
 import styled from "styled-components";
 
-const ButtonBase = styled.button`
+type AllButtonProps = React.ComponentPropsWithRef<"button">;
+
+const ButtonBase = styled.button<AllButtonProps>`
   align-items: center;
-  border-radius: ${({ theme }) => theme.presets.rounded};
+  border-radius: ${({ theme }) => theme.presets.rounded.sm};
   border: 0;
   cursor: pointer;
   display: inline-flex;
-  padding: ${({ theme }) => theme.sizes.sm};
   margin: 0 ${({ theme }) => theme.sizes.sm};
+  padding: ${({ theme }) => theme.sizes.sm};
   place-content: center;
 `;
 
-export default function Button(props: React.ComponentPropsWithRef<"button">) {
-  const { children, ...rest } = props;
-  return <ButtonBase {...rest}>{children}</ButtonBase>;
-}
+const DefaultButton = styled(ButtonBase)``;
+export default DefaultButton;
+
+export const RoundButton = styled(ButtonBase)`
+  border-radius: ${({ theme }) => theme.presets.rounded.xlg};
+  color: inherit;
+`;
+
+export const WideButton = styled(ButtonBase)`
+  bottom: 0;
+  position: sticky;
+  margin: 0 0 ${({ theme }) => theme.sizes.sm};
+  width: 100%;
+`;

@@ -74,6 +74,15 @@
   }
 }
 
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
 @keyframes pulse {
   0% {
     transform: scale(1, 1);
@@ -169,14 +178,23 @@
   }
 }
 @mixin fade($out: true, $duration: 200ms) {
-  animation: fade $duration ease-out;
-
   @if $out {
-    animation-direction: reverse;
+    animation: fade-out $duration ease-out;
+  } @else {
+    animation: fade-in $duration ease-out;
   }
+
+  animation-direction: reverse;
+  animation-fill-mode: forwards;
+}
+@mixin fade-in($duration: 200ms) {
+  @include fade(false, 250ms);
+}
+@mixin fade-out($duration: 200ms) {
+  @include fade(true, 250ms);
 }
 @mixin merge-animations($a1, $a2, $d1: 200ms, $d2: 200ms) {
-  animation: $a1 $d1 ease-out, $a2 $d1 ease-out;
+  animation: $a1 $d1 ease-out, $a2 $d2 ease-out;
   animation-fill-mode: forwards;
 }
 @mixin spin {
@@ -238,7 +256,7 @@
   animation-direction: reverse;
 }
 .fade-in {
-  @include fade($out: false);
+  @include fade-in()
 }
 .fade-out {
   @extend .fade-in;
