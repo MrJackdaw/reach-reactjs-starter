@@ -7,7 +7,7 @@ import { FlexRow } from "./Containers";
 const Wrapper = styled(FlexRow)`
   background-color: ${({ theme }) => theme.colors.bgColor};
   border-radius: ${({ theme }) => theme.presets.rounded};
-  box-shadow: ${({ theme }) => theme.presets.elevated.md(theme)};
+  box-shadow: ${({ theme }) => theme.presets.elevated.md};
   margin-bottom: ${({ theme }) => theme.sizes.xs};
   width: 100%;
 

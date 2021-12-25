@@ -4,13 +4,14 @@ import { ConnectionPropKeys, ConnectionProps } from "types/shared";
 import {
   useMyAlgo,
   useWalletConnect,
-  truncateAccountString,
   disconnectUser,
-} from "reach";
-import store, { addNotification } from "state";
+  connectWallet,
+} from "reach/account";
+import store, { resetNotifications, updateNotification } from "state";
 import Button, { WideButton } from "components/Forms/Button";
 import Modal from "components/Common/Modal";
 import { FlexColumn } from "components/Common/Containers";
+import { truncateAccountString } from "utils";
 
 const PROVIDERS: any = {
   WalletConnect: useWalletConnect,
@@ -18,24 +19,26 @@ const PROVIDERS: any = {
 };
 
 const ConnectWallet = () => {
-  const { account } = store.getState();
+  const globalState = store.getState();
+  const { account } = globalState;
   const [state, setState] = useState<ConnectionProps>({});
   const [modal, showModal] = useState(false);
   const connect = async (prov: string) => {
     showModal(false);
-    const connectUser = PROVIDERS[prov];
+    const configureWalletProvider = PROVIDERS[prov];
     if (!prov) return;
 
-    const acc = await connectUser();
-    if (acc === null) return;
-
-    addNotification("✅ Connected!");
+    configureWalletProvider();
+    const alertId = resetNotifications("⏳ Connecting user ... ", true);
+    const acc = await connectWallet();
+    const msg = acc ? "✅ Connected!" : "❌ Account Fetch error";
+    updateNotification(alertId, msg);
   };
 
   useEffect(
     () =>
       store.subscribeToKeys(
-        (s) => setState((p) => ({ ...p, ...s})),
+        (s) => setState((p) => ({ ...p, ...s })),
         ConnectionPropKeys
       ),
     [account]

@@ -1,11 +1,6 @@
-import { DefaultTheme } from "styled-components";
+// import { DefaultTheme } from "styled-components";
 
-export const ConnectionPropKeys = [
-  "address",
-  "error",
-  "loading",
-  "account",
-];
+export const ConnectionPropKeys = ["address", "error", "loading", "account"];
 
 export type ConnectionProps = {
   address?: string;
@@ -16,7 +11,7 @@ export type ConnectionProps = {
 
 export type UIThemeType = "Dark" | "Light";
 
-export type UITheme = DefaultTheme & {
+/* export type UITheme = DefaultTheme & {
   sizes: {
     xxs: string;
     xs: string;
@@ -44,4 +39,37 @@ export type UITheme = DefaultTheme & {
       lg(t: UITheme): string;
     };
   };
-};
+}; */
+
+declare module "styled-components" {
+  type DefaultSizes = {
+    xxs?: string;
+    xs?: string;
+    sm: string;
+    default?: string;
+    md: string;
+    lg: string;
+    xlg: string;
+    xxlg?: string;
+  };
+
+  export interface DefaultTheme {
+    sizes: DefaultSizes;
+
+    colors: {
+      accent: string;
+      bgColor: string;
+      bgGradient?: string;
+      semitransparent: string;
+      error: string;
+      primary: string;
+      secondary: string;
+      warning: string;
+    };
+
+    presets: {
+      elevated: DefaultSizes;
+      rounded: DefaultSizes;
+    };
+  }
+}

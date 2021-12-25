@@ -1,5 +1,3 @@
-import { UITheme } from "types/shared";
-
 const sizes = {
   xxs: "0.125rem",
   xs: "0.3rem",
@@ -14,12 +12,16 @@ const sizes = {
 
 const presets = {
   elevated: {
-    md: (t: UITheme) => ` 0 ${t.sizes.xxs} ${t.sizes.xs} ${t.colors.primary}44`,
+    md: `0 ${sizes.xs} ${sizes.xs}`,
+    sm: `0 ${sizes.xxs} ${sizes.xs}`,
+    lg: `0 ${sizes.sm} ${sizes.xs}`,
+    xlg: `0 ${sizes.default} ${sizes.xs}`,
   },
+
   rounded: {
-    xlg: `100%`,
-    lg: `50%`,
-    md: `25%`,
+    xlg: `72px`,
+    lg: `48px`,
+    md: `16px`,
     sm: `4px`,
   },
 };

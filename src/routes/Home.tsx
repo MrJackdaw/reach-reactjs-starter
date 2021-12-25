@@ -1,6 +1,5 @@
 import { Face } from "@material-ui/icons";
 import { FlexColumn, FlexRow } from "components/Common/Containers";
-import { disconnectUser } from "reach";
 import { useEffect, useState, Fragment } from "react";
 import store from "state";
 import Button from "../components/Forms/Button";
@@ -13,11 +12,10 @@ const links = [
 const Home = () => {
   const gState = store.getState();
   const [state, setState] = useState<Partial<typeof gState>>(gState);
-  // React to global state change
   const onAppState = (s: any) => setState((old) => ({ ...old, ...s }));
 
   // Subscribe to global state, and unsubscribe on component unmount
-  useEffect(() => store.subscribe(onAppState));
+  useEffect(() => store.subscribeToKeys(onAppState, ["globalCount"]));
 
   return (
     <FlexColumn className="Home" padded>
@@ -41,10 +39,6 @@ const Home = () => {
       </p>
 
       <p>
-        <b>Global Count:</b> <span>{state.globalCount}</span>
-      </p>
-
-      <p>
         {links.map(({ text, href }, i) => (
           <Fragment key={i}>
             <a
@@ -61,8 +55,9 @@ const Home = () => {
       </p>
 
       <FlexRow style={{ placeContent: "center" }}>
-        <Button onClick={incAppState}>Increment Global Counter</Button>
-        <Button onClick={disconnectUser}>Reset App State</Button>
+        <Button onClick={incAppState}>
+          <b>Global Count ( + )&nbsp;</b> <span>{state.globalCount}</span>
+        </Button>
       </FlexRow>
     </FlexColumn>
   );

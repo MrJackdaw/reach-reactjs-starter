@@ -1,9 +1,14 @@
 import createState from "@jackcom/raphsducks";
+import { parseContractAddress } from "reach";
 import { NETWORKS } from "reach/constants";
 
 /** Your global application state. Add any properties you need here */
 const store = createState({
+  appsCount: 0,
+  
   globalCount: 0,
+
+  initialized: false,
 
   /** Notifications */
   notifications: [] as Alert[],
@@ -16,6 +21,8 @@ const store = createState({
 
   /** Reach `networkAccount` instance */
   accountsList: [] as any[],
+
+  assets: [] as any[],
 
   /** Reach `networkAccount` balance */
   balance: "0.00",
@@ -32,38 +39,88 @@ const store = createState({
 
 export default store;
 
-export type Alert = { msg: string; time: number };
+export type Alert = {
+  msg: string;
+  time: number;
+  persistent?: boolean;
+  error?: boolean;
+};
 
-export function addNotification(msg: string, additionalUpdates = {}) {
-  const note = makeNotification(msg);
+export function addNotification(
+  msg: string | Alert,
+  persist = false,
+  additional = {}
+) {
+  const note = (msg as Alert).time
+    ? (msg as Alert)
+    : createAlert(msg as string, persist);
   const { notifications: old } = store.getState();
   const notifications = [...old, note];
-  store.multiple({ notifications, ...additionalUpdates });
+  store.multiple({ notifications, ...additional });
+  return note.time;
 }
 
-export function resetNotifications(msg?: string) {
+export function resetNotifications(msg?: string, persist = false) {
   const updates = [];
-  if (msg) updates.push(makeNotification(msg));
+  let msgId = null;
+  if (msg) {
+    const notification = createAlert(msg, persist);
+    msgId = notification.time;
+    updates.push(notification);
+  }
   store.notifications(updates);
+  return msgId;
 }
 
-export function removeNotification(msg: Alert, additionalUpdates = {}) {
+export function removeNotification(msg: Alert, additional = {}) {
   const { notifications } = store.getState();
   const i = notifications.findIndex((n) => n.time === msg.time);
   if (i === -1) return;
 
   const updates = [...notifications];
   updates.splice(i, 1);
-  store.multiple({ notifications: updates, ...additionalUpdates });
+  store.multiple({ notifications: updates, ...additional });
 }
 
-function makeNotification(msg: string) {
-  return { msg, time: new Date().getTime() };
-}
-
-export function clearNotification(m?: string) {
-  if (!m) return;
+export function updateAsError(id: number | null, msg: string, additional = {}) {
   const { notifications } = store.getState();
-  const note = notifications.find((n) => n.msg === m);
-  if (note) removeNotification(note);
+  const msgIndex = notifications.findIndex(({ time }) => time === id);
+  const newAlert = createAlert(msg, true);
+  const updates = [...notifications];
+  newAlert.error = true;
+  newAlert.persistent = false;
+  if (id) newAlert.time = id as number;
+  if (msgIndex === -1) updates.push(newAlert);
+  else updates.splice(msgIndex, 1, newAlert);
+
+  store.multiple({ notifications: updates, ...additional });
+}
+
+export function updateNotification(
+  id: number | null,
+  msg: string,
+  persist = false,
+  additional = {}
+) {
+  const { notifications } = store.getState();
+  const i = notifications.findIndex(({ time }) => time === id);
+  const newAlert = createAlert(msg, true);
+  const updates = [...notifications];
+  newAlert.time = id as number;
+  newAlert.persistent = persist;
+  if (i === -1) updates.push(newAlert);
+  else updates.splice(i, 1, newAlert);
+
+  store.multiple({ notifications: updates, ...additional });
+}
+
+export function checkHasToken(token: any) {
+  const { assets } = store.getState();
+  const id = parseContractAddress(token);
+  const aI = assets.findIndex((a) => parseContractAddress(a.id) === id);
+  return aI > -1;
+}
+
+function createAlert(msg: string, persistent = false): Alert {
+  return { msg, time: new Date().getTime(), persistent };
 }

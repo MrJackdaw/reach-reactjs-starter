@@ -29,6 +29,11 @@ export const Code = styled.code`
   padding: ${({ theme }) => theme.sizes.sm};
 `;
 
+export const GridContainer = styled.div`
+  display: grid;
+  grid-gap: 0;
+`;
+
 export const PageContainer = styled(FlexColumn)`
   margin: 0 auto;
   min-height: 70vmax;

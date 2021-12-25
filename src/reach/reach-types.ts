@@ -3,6 +3,21 @@ import { Stdlib_User as StdLibUser } from "@reach-sh/stdlib/interfaces";
 /** Reach StdLib instance */
 type BigNumber = any;
 
+export type ConnectorInterface = {
+  fetchAccount(who: string | ReachAccount): any | Promise<any>;
+  loadAssets(who: string | ReachAccount): any | Promise<any>;
+};
+
+export type ReachToken = {
+  id: number | string;
+  name: string;
+  symbol: string;
+  url: string;
+  amount?: number | any;
+  supply: string | number;
+  decimals: number;
+};
+
 /** A reach-connected Network Account representation */
 export type ReachAccount = {
   networkAccount: { addr?: string; address?: string; [x: string]: any };

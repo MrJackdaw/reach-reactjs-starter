@@ -24,7 +24,7 @@ const ModalContainer = styled(FlexColumn)`
 const ModalContents = styled(FlexColumn).attrs({ padded: true })`
   background: #fff;
   border-radius: ${({ theme }) => theme.presets.rounded};
-  box-shadow: ${({ theme }) => theme.presets.elevated};
+  box-shadow: ${({ theme }) => theme.presets.elevated.sm};
   color: ${({ theme }) => theme.colors.primary};
   height: 50vmin;
   overflow-y: auto;
