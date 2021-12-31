@@ -22,46 +22,61 @@ export type ReachToken = {
 export type ReachAccount = {
   networkAccount: { addr?: string; address?: string; [x: string]: any };
   /** @deprecated - Use `reachAccount.contract(backend)` instead */
-  attach(backend: any, contractInfo: any | Promise<any>): ReachContract;
+  attach<T extends Record<string, any>>(
+    backend: T,
+    contractInfo: any | Promise<any>
+  ): ReachContract<T>;
   /** @deprecated - Use `reachAccount.contract(backend)` instead */
-  deploy(backend: any | Promise<any>): ReachContract;
-  contract(backend: any, contractInfo?: any): ReachContract;
+  deploy<T extends Record<string, any>>(
+    backend: T | Promise<any>
+  ): ReachContract<T>;
+  contract<T extends Record<string, any>>(
+    backend: T,
+    contractInfo?: any
+  ): ReachContract<T>;
   getAddress(): string;
   setDebugLabel(label: string): ReachAccount;
   tokenAccept(tokenId: string | number): Promise<void>;
   tokenMetadata(tokenId: string | number): Promise<{ [x: string]: any }>;
 };
 
-/** Reach Contract `Participant` member */
-type RCParticipant = {
-  [participantName: string]: (interact: any) => Promise<any>;
-};
-/** Reach Contract `View` member */
-type RCView = { [viewName: string]: { [viewProp: string]: RCFn } };
-/** Reach Contract `API` member */
-type RCApi = { [apiName: string]: { [apiMethod: string]: RCFn } };
-
-type RCFn = {
-  (...args: any[]): Promise<any>;
-};
-
-export type ReachContract = {
+export type ReachContract<T extends Record<string, any>> = {
+  /** Get contract address */
   getInfo(): Promise<any>;
+  /** Get deployed contract address */
   getContractAddress(): Promise<string | number>;
   /** Reach Contract `API` member */
-  a: RCApi;
+  a: T["_APIs"];
   /** Reach Contract `API` member */
-  apis: RCApi;
+  apis: T["_APIs"];
   /** Reach Contract `Participant` member */
-  p: RCParticipant;
+  p: T["_Participants"];
   /** Reach Contract `Participant` member */
-  participants: RCParticipant;
+  participants: T["_Participants"];
   /** Reach Contract `View` member */
-  v: RCView;
+  v: CtcLabeledFunc<any>;
   /** Reach Contract `View` member */
-  views: RCView;
+  views: CtcLabeledFunc<any>;
+  /** Reach Contract `Events` member */
+  e: ReachEventStream;
+  /** Reach Contract `Events` member */
+  events: ReachEventStream;
   /** @deprecated Get contract `Views`. Use `ctc.views` or `ctc.v` */
-  getViews(): RCView;
+  getViews(): CtcLabeledFunc<any>;
+};
+
+/** `ReachEvent` is an `Event` emitted from a contract `EventStream` */
+export type ReachEvent<T extends any> = { when: any; what: T };
+
+/** `ReachEvent` is an `Event` emitted from a contract `EventStream` */
+export type ReachEventStream = {
+  [name: string]: {
+    next(): Promise<ReachEvent<any>>;
+    seek(t: BigNumber): void;
+    seekNow(): Promise<void>;
+    lastTime(): Promise<BigNumber>;
+    monitor(handler: (e: ReachEvent<any>) => void): Promise<void>;
+  };
 };
 
 /** `NetworkData` describes single network data-item (for e.g. Ethereum) */
@@ -75,4 +90,17 @@ export type NetworkData = {
 /** StdLib Helper Interface */
 export type ReachStdLib = StdLibUser<{ [x: string]: any }> & {
   [x: string]: any;
+};
+
+/** Reach Contract `API` Function(s) */
+export type CtcFn = { (...args: any[]): any | Promise<any> };
+
+/** Reach Contract `View` member */
+export type CtcLabeledFunc<T extends any> =
+  | CtcFnGroup<T>
+  | { [fnName: string]: CtcFn };
+
+/** Reach Contract Method (function) grouping */
+export type CtcFnGroup<T> = {
+  [k in keyof T]: CtcFn;
 };

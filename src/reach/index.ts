@@ -46,23 +46,24 @@ export async function inlineAssetOptIn(
   acc: ReachAccount,
   tokenId: any
 ) {
-  return new Promise(async (resolve) => {
-    if (checkHasToken(tokenId)) return resolve(true);
-    updateNotification(alertId, `⭐️ Please opt-in to token!`, true);
+  if (checkHasToken(tokenId)) return true;
+  updateNotification(alertId, `⭐️ Please opt-in to token!`, true);
 
-    try {
-      const [_, asset] = await Promise.all([
-        acc.tokenAccept(tokenId),
-        tokenMetadata(tokenId, acc),
-      ]);
-      const { assets } = store.getState();
-      store.assets([...assets, asset]);
-      return resolve(true);
-    } catch (error) {
-      updateNotification(alertId, `❌ Could not opt-in!`, true);
-      return resolve(false);
-    }
-  });
+  const [asset, accepted] = await Promise.all([
+    tokenMetadata(tokenId, acc),
+    acc
+      .tokenAccept(tokenId)
+      .then(() => true)
+      .catch(() => false),
+  ]);
+
+  if (accepted) {
+    const { assets } = store.getState();
+    store.allAssets([...assets, asset]);
+    updateNotification(alertId, `✅ Accepted Token`);
+  } else updateNotification(alertId, `❌ Could not opt-in!`);
+
+  return accepted;
 }
 
 export function formatAddress(acc: ReachAccount) {
