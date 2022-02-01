@@ -32,7 +32,7 @@ const ConnectWallet = () => {
     if (!prov) return;
 
     configureWalletProvider();
-    const alertId = resetNotifications("⏳ Connecting user ... ", true);
+    const alertId = resetNotifications("⏳ Connecting ... ", true);
     const acc = await connect();
     const msg = acc ? "✅ Connected!" : "❌ Account Fetch error";
     updateNotification(alertId, msg);
