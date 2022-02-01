@@ -1,11 +1,10 @@
 import createState from "@jackcom/raphsducks";
-import { parseContractAddress } from "reach";
-import { NETWORKS } from "reach/constants";
+import { NETWORKS } from "@jackcom/reachduck";
 
 /** Your global application state. Add any properties you need here */
 const store = createState({
   appsCount: 0,
-  
+
   globalCount: 0,
 
   initialized: false,
@@ -112,13 +111,6 @@ export function updateNotification(
   else updates.splice(i, 1, newAlert);
 
   store.multiple({ notifications: updates, ...additional });
-}
-
-export function checkHasToken(token: any) {
-  const { assets } = store.getState();
-  const id = parseContractAddress(token);
-  const aI = assets.findIndex((a) => parseContractAddress(a.id) === id);
-  return aI > -1;
 }
 
 function createAlert(msg: string, persistent = false): Alert {

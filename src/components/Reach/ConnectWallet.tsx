@@ -1,21 +1,22 @@
 import { useEffect, useState } from "react";
-import { ConnectionPropKeys, ConnectionProps } from "types/shared";
-// Views
 import {
-  useMyAlgo,
+  useWebWallet,
   useWalletConnect,
   disconnectUser,
-  connectWallet,
-} from "reach/account";
+  truncateAccountString,
+  checkSessionExists,
+} from "@jackcom/reachduck";
+// Views
 import store, { resetNotifications, updateNotification } from "state";
+import { ConnectionPropKeys, ConnectionProps } from "types/shared";
 import Button, { WideButton } from "components/Forms/Button";
 import Modal from "components/Common/Modal";
 import { FlexColumn } from "components/Common/Containers";
-import { truncateAccountString } from "utils";
+import { connect, reconnect } from "reach";
 
 const PROVIDERS: any = {
   WalletConnect: useWalletConnect,
-  MyAlgo: useMyAlgo,
+  MyAlgo: useWebWallet,
 };
 
 const ConnectWallet = () => {
@@ -23,32 +24,49 @@ const ConnectWallet = () => {
   const { account } = globalState;
   const [state, setState] = useState<ConnectionProps>({});
   const [modal, showModal] = useState(false);
-  const connect = async (prov: string) => {
+  const [connecting, setConnecting] = useState(false);
+  const connectTo = async (prov: string) => {
     showModal(false);
+    setConnecting(true);
     const configureWalletProvider = PROVIDERS[prov];
     if (!prov) return;
 
     configureWalletProvider();
     const alertId = resetNotifications("⏳ Connecting user ... ", true);
-    const acc = await connectWallet();
+    const acc = await connect();
     const msg = acc ? "✅ Connected!" : "❌ Account Fetch error";
     updateNotification(alertId, msg);
+    setConnecting(false);
   };
 
-  useEffect(
-    () =>
-      store.subscribeToKeys(
-        (s) => setState((p) => ({ ...p, ...s })),
-        ConnectionPropKeys
-      ),
-    [account]
-  );
+  useEffect(() => {
+    const { exists } = checkSessionExists();
+    if (exists && !account) {
+      resetNotifications("⏳ Reconnecting ... ");
+      reconnect();
+    }
 
-  return state.address ? (
-    <Button onClick={disconnectUser}>
-      {truncateAccountString(state.address!)}
-    </Button>
-  ) : (
+    return store.subscribeToKeys(
+      (s) => setState((p) => ({ ...p, ...s })),
+      ConnectionPropKeys
+    );
+  }, []);
+
+  if (account)
+    return (
+      <Button onClick={disconnectUser}>
+        {truncateAccountString(state.address!)}
+      </Button>
+    );
+
+  if (connecting)
+    return (
+      <Button disabled>
+        <span className="spinner--before">Loading ...</span>
+      </Button>
+    );
+
+  return (
     <>
       {state.error ? (
         <Button onClick={() => window.location.reload()}>
@@ -57,23 +75,22 @@ const ConnectWallet = () => {
         </Button>
       ) : (
         <Button onClick={() => showModal(true)}>
-          {state.loading && (
-            <>
-              <span className="spinner--before">Loading ...</span>
-            </>
+          {state.loading ? (
+            <span className="spinner--before">Loading ...</span>
+          ) : (
+            "Connect Wallet"
           )}
-          {!state.loading && "Connect Wallet"}
         </Button>
       )}
 
       {modal && (
         <Modal title="Select Wallet Provider" onClose={() => showModal(false)}>
           <FlexColumn style={{ alignSelf: "stretch", placeContent: "center" }}>
-            <WideButton onClick={() => connect("MyAlgo")}>
+            <WideButton onClick={() => connectTo("MyAlgo")}>
               <b>MyAlgo wallet</b>
             </WideButton>
 
-            <WideButton onClick={() => connect("WalletConnect")}>
+            <WideButton onClick={() => connectTo("WalletConnect")}>
               <b>WalletConnect</b>
             </WideButton>
           </FlexColumn>

@@ -11,6 +11,7 @@ import ActiveNotifications from "components/ActiveNotifications";
 import WalletNotFound from "components/Reach/WalletNotFound";
 import store from "state";
 
+
 function App() {
   const sTheme = getTheme();
   const [theme, setTheme] = useState(THEME[sTheme] || {});
