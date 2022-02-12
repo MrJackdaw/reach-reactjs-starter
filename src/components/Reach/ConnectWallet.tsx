@@ -3,7 +3,7 @@ import {
   useWebWallet,
   useWalletConnect,
   disconnectUser,
-  truncateAccountString,
+  truncateString,
   checkSessionExists,
 } from "@jackcom/reachduck";
 // Views
@@ -55,7 +55,7 @@ const ConnectWallet = () => {
   if (account)
     return (
       <Button onClick={disconnectUser}>
-        {truncateAccountString(state.address!)}
+        {truncateString(state.address!)}
       </Button>
     );
 

@@ -9,6 +9,7 @@ import {
   reconnectUser,
   disconnectUser,
   tokenMetadata as getReachToken,
+  optInToAsset,
 } from "@jackcom/reachduck";
 import { ReachAccount, ReachToken } from "@jackcom/reachduck/lib/types";
 
@@ -40,12 +41,11 @@ export async function inlineAssetOptIn(
   acc: ReachAccount,
   tokenId: any
 ) {
-  if (await checkHasToken(tokenId)) return true;
-  updateNotification(alertId, `⭐️ Please opt-in to token!`, true);
+  updateNotification(alertId, `⭐️ Opt-in to token!`, true);
 
   const [asset, accepted] = await Promise.all([
     tokenMetadata(tokenId, acc),
-    acc.tokenAccept(tokenId).then(() => true),
+    optInToAsset(acc, tokenId)
   ]);
 
   if (accepted) {

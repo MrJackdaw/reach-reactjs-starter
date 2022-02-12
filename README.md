@@ -9,12 +9,12 @@ If you need to add or modify Webpack config overrides, consider using [@craco](h
 
 * [ReactJS](https://github.com/facebook/create-react-app) with [Typescript support](https://www.typescriptlang.org/): A popular front-end framework for building web applications 
 * [Reach Language](https://docs.reach.sh/): A compiled language for building multi-chain smart contracts. This template includes **the JS dependency**, and [not the CLI](#installing-the-reach-cli).
-* [RaphsDucks](https://github.com/JACK-COM/raphsducks): a simplified, unopinonated application state manager.
 * [Cryptocurrency Icons](https://github.com/spothq/cryptocurrency-icons) as well as a single-file API (and ReactJS component) for using them
 * [Google's Material Icons](https://fonts.google.com/icons) for quick UI sugar
-* SASS support
-
-There are no pre-defined styles: you can `npm install` any additional dependencies.
+* SASS (no pre-defined style libraries: you can `npm install` any additional dependencies.)
+* Typescript
+* [🦆 raphsducks](https://github.com/JACK-COM/raphsducks): an unopinonated state manager.
+* [🦆 reachduck](https://github.com/JACK-COM/reachduck): a simple API for interacting with the blockchain and/or a reach `stdlib` instance
 
 ---
 ## How do I use it?
@@ -32,8 +32,8 @@ This project includes some helpful bits, including
     It uses `raphsducks`, so you can subscribe to it like any other state.
 * A `connect` button that will automatically trigger a wallet connection.
     Default network is Algorand, but you can set it to `ETH` and it should trigger MetaMask by default.
-* A [light API](src/reach/README.md) for interacting with your `@reach/stdlib` instance. You can build this out as needed.
 * A stub Reach application, so you can get started building your multichain smart contracts.
+* A [light API](https://github.com/JACK-COM/reachduck) for interacting with your `@reach/stdlib` instance.
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). 
