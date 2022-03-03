@@ -21,26 +21,27 @@ If you need to add or modify Webpack config overrides, consider using [@craco](h
 
 1. Clone the project
 2. `cd path/to/my-project`
-3. `npm install` 
-4. `npm run start` (launches at `localhost:3000`) 
+3. `rm -rf .git && git init` (create a fresh git repository for your project)
+4. `npm install` 
+5. `npm run start` (launches at `localhost:3000`) 
 
 Take a look at [Available Scripts](#available-scripts) for additional CLI commands.
 
 ### Reach Helpers
 This project includes some helpful bits, including 
-* A self-contained `Reach` state for handling authentication.\
-    It uses `raphsducks`, so you can subscribe to it like any other state.
-* A `connect` button that will automatically trigger a wallet connection.
-    Default network is Algorand, but you can set it to `ETH` and it should trigger MetaMask by default.
-* A stub Reach application, so you can get started building your multichain smart contracts.
-* A [light API](https://github.com/JACK-COM/reachduck) for interacting with your `@reach/stdlib` instance.
+* A self-contained [state instance](https://github.com/JACK-COM/raphsducks). You can subscribe to it like any other state.
+* A `connect` button that will automatically trigger a wallet connection.\
+    Default network is Algorand, but if your `stdlib` instance is using `ETH`, it will trigger MetaMask.
+* A stub `Reach` application to get you started on your multichain smart contracts. I personally use the directory to store my compiled contracts. 
+* A [light API](https://www.npmjs.com/package/@jackcom/reachduck#methods) for interacting with your `@reach/stdlib` instance.
 
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). 
 
 ---
+## Additional Notes
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). It does not use any `react-script` or `webpack` configuration overrides. 
 
-**Note:** If you don't have reach installed, run this in your project directory to download it (and make the downloaded item executable)
+### Reach CLI
+**Note:** If you don't have the `reach` compiler installed, run this in your project directory to download it (and make the downloaded item executable)
 ```
   $ curl https://docs.reach.sh/reach -o reach ; chmod +x reach
 ```

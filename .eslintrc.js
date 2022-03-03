@@ -15,6 +15,8 @@ module.exports = {
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/no-unused-vars": ["error"],
     "@typescript-eslint/no-use-before-define": "off",
+    'no-shadow': 'off',
+    '@typescript-eslint/no-shadow': ['warn'],
     "no-unused-vars": "off",
     "no-use-before-define": "off",
     "react/button-has-type": "off",
