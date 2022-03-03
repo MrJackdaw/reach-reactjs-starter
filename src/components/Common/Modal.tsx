@@ -23,13 +23,14 @@ const ModalContainer = styled(FlexColumn)`
 
 const ModalContents = styled(FlexColumn).attrs({ padded: true })`
   background: #fff;
-  border-radius: ${({ theme }) => theme.presets.rounded};
+  border-radius: ${({ theme }) => theme.presets.rounded.default};
   box-shadow: ${({ theme }) => theme.presets.elevated.sm};
   color: ${({ theme }) => theme.colors.primary};
   height: 50vmin;
   overflow-y: auto;
   overflow-x: hidden;
-  width: 50vmin;
+  width: 50vw;
+  min-width: 300px;
 
   .title {
     flex-grow: 1;

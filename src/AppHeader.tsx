@@ -7,11 +7,13 @@ import { Link } from "react-router-dom";
 const HeaderContainer = styled(FlexRow)`
   background-color: ${({ theme }) => theme.colors.bgColor};
   color: ${({ theme }) => theme.colors.primary};
-  height: 10vmin;
+  height: 60px;
   justify-content: space-between;
+  padding-right: 0.5rem;
 
   .logo {
-    height: 10vmin;
+    display: block;
+    height: 60px;
     pointer-events: none;
   }
 `;

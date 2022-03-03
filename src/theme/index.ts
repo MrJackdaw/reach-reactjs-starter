@@ -78,7 +78,7 @@ export function getTheme(): UIThemeType {
   const { theme } = themeState.getState();
   if (!theme.length) {
     return setTheme(
-      (window.localStorage.getItem(THEME_KEY) || "Light") as UIThemeType
+      (window.localStorage.getItem(THEME_KEY) || "Dark") as UIThemeType
     );
   }
 
