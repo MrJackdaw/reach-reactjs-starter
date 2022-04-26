@@ -30,7 +30,7 @@ const OrderedList = styled.ol`
  */
 const ListView = styled((props: ListViewProps): JSX.Element => {
   const { data, itemText, onItemClick = noOp, ordered, ...rest } = props;
-  const Wrapper = ordered ? OrderedList : UnorderedList;
+  const Wrapper: any = ordered ? OrderedList : UnorderedList;
 
   return (
     <Wrapper {...rest}>

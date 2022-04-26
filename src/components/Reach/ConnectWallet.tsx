@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
+import MyAlgoConnect from "@randlabs/myalgo-connect";
 import {
-  useWebWallet,
-  useWalletConnect,
+  loadStdlib,
+  ALGO_WalletConnect as WalletConnect,
+} from "@reach-sh/stdlib";
+import {
   disconnectUser,
   truncateString,
   checkSessionExists,
+  loadReachWithOpts,
 } from "@jackcom/reachduck";
 // Views
 import store, { resetNotifications, updateNotification } from "state";
@@ -13,11 +17,6 @@ import Button, { WideButton } from "components/Forms/Button";
 import Modal from "components/Common/Modal";
 import { FlexColumn } from "components/Common/Containers";
 import { connect, reconnect } from "reach";
-
-const PROVIDERS: any = {
-  WalletConnect: useWalletConnect,
-  MyAlgo: useWebWallet,
-};
 
 const ConnectWallet = () => {
   const globalState = store.getState();
@@ -28,10 +27,9 @@ const ConnectWallet = () => {
   const connectTo = async (prov: string) => {
     showModal(false);
     setConnecting(true);
-    const configureWalletProvider = PROVIDERS[prov];
     if (!prov) return;
 
-    configureWalletProvider();
+    configureWalletProvider(prov);
     const alertId = resetNotifications("⏳ Connecting ... ", true);
     const acc = await connect();
     const msg = acc ? "✅ Connected!" : "❌ Account Fetch error";
@@ -54,9 +52,7 @@ const ConnectWallet = () => {
 
   if (account)
     return (
-      <Button onClick={disconnectUser}>
-        {truncateString(state.address!)}
-      </Button>
+      <Button onClick={disconnectUser}>{truncateString(state.address!)}</Button>
     );
 
   if (connecting)
@@ -101,3 +97,11 @@ const ConnectWallet = () => {
 };
 
 export default ConnectWallet;
+
+function configureWalletProvider(pr: string) {
+  if (!["MyAlgo", "WalletConnect"].includes(pr)) return;
+  loadReachWithOpts(loadStdlib, {
+    walletFallback: pr === "MyAlgo" ? { MyAlgoConnect } : { WalletConnect },
+    network: "TestNet",
+  });
+}
