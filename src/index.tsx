@@ -3,10 +3,6 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { loadStdlib } from "@reach-sh/stdlib";
-import { loadReach } from "@jackcom/reachduck";
-
-loadReach(loadStdlib);
 
 ReactDOM.render(
   <React.StrictMode>
