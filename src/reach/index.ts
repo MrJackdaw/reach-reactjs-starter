@@ -10,11 +10,18 @@ import {
   disconnectUser,
   tokenMetadata as getReachToken,
   optInToAsset,
+  loadReachWithOpts
 } from "@jackcom/reachduck";
 import { ReachAccount, ReachToken } from "@jackcom/reachduck/lib/types";
+import {
+  loadStdlib,
+  ALGO_WalletConnect as WalletConnect,
+} from "@reach-sh/stdlib";
+import MyAlgoConnect from "@randlabs/myalgo-connect";
 
 /** Connect user Wallet */
-export async function connect() {
+export async function connect(provider: string) {
+  configureWalletProvider(provider);
   const updates = await connectUser();
   store.multiple(updates);
   return updates.account;
@@ -22,7 +29,10 @@ export async function connect() {
 
 /** Reconnect user session */
 export async function reconnect() {
-  const { addr = undefined } = checkSessionExists();
+  const { addr = undefined, isWCSession } = checkSessionExists();
+  configureWalletProvider(
+      isWCSession ? "WalletConnect" : "MyAlgo"
+  );
   const updates = await reconnectUser(addr);
   store.multiple(updates);
   return updates.account;
@@ -74,4 +84,14 @@ export async function tokenMetadata(
 export async function checkHasToken(token: any) {
   const { account } = store.getState();
   return account?.tokenAccepted(token) || Promise.resolve(false);
+}
+
+/** Initialize the `stdlib` instance according to the wallet provider. */
+function configureWalletProvider(pr: string) {
+  if (!["WalletConnect", "MyAlgo"].includes(pr)) return;
+  loadReachWithOpts(loadStdlib, {
+    walletFallback:
+        pr === "MyAlgo" ? { MyAlgoConnect } : { WalletConnect },
+    network: "TestNet",
+  });
 }
