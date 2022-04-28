@@ -10,7 +10,7 @@ import {
   disconnectUser,
   tokenMetadata as getReachToken,
   optInToAsset,
-  loadReachWithOpts
+  loadReachWithOpts,
 } from "@jackcom/reachduck";
 import { ReachAccount, ReachToken } from "@jackcom/reachduck/lib/types";
 import {
@@ -30,9 +30,7 @@ export async function connect(provider: string) {
 /** Reconnect user session */
 export async function reconnect() {
   const { addr = undefined, isWCSession } = checkSessionExists();
-  configureWalletProvider(
-      isWCSession ? "WalletConnect" : "MyAlgo"
-  );
+  configureWalletProvider(isWCSession ? "WalletConnect" : "MyAlgo");
   const updates = await reconnectUser(addr);
   store.multiple(updates);
   return updates.account;
@@ -55,7 +53,7 @@ export async function inlineAssetOptIn(
 
   const [asset, accepted] = await Promise.all([
     tokenMetadata(tokenId, acc),
-    optInToAsset(acc, tokenId)
+    optInToAsset(acc, tokenId),
   ]);
 
   if (accepted) {
@@ -89,9 +87,11 @@ export async function checkHasToken(token: any) {
 /** Initialize the `stdlib` instance according to the wallet provider. */
 function configureWalletProvider(pr: string) {
   if (!["WalletConnect", "MyAlgo"].includes(pr)) return;
+
+  const fallback = pr === "MyAlgo" ? { MyAlgoConnect } : { WalletConnect };
+
   loadReachWithOpts(loadStdlib, {
-    walletFallback:
-        pr === "MyAlgo" ? { MyAlgoConnect } : { WalletConnect },
+    walletFallback: fallback,
     network: "TestNet",
   });
 }
