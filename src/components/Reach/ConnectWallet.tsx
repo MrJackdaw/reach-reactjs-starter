@@ -1,14 +1,8 @@
 import { useEffect, useState } from "react";
-import MyAlgoConnect from "@randlabs/myalgo-connect";
-import {
-  loadStdlib,
-  ALGO_WalletConnect as WalletConnect,
-} from "@reach-sh/stdlib";
 import {
   disconnectUser,
   truncateString,
   checkSessionExists,
-  loadReachWithOpts,
 } from "@jackcom/reachduck";
 // Views
 import store, { resetNotifications, updateNotification } from "state";
@@ -29,9 +23,8 @@ const ConnectWallet = () => {
     setConnecting(true);
     if (!prov) return;
 
-    configureWalletProvider(prov);
     const alertId = resetNotifications("⏳ Connecting ... ", true);
-    const acc = await connect();
+    const acc = await connect(prov);
     const msg = acc ? "✅ Connected!" : "❌ Account Fetch error";
     updateNotification(alertId, msg);
     setConnecting(false);
@@ -97,11 +90,3 @@ const ConnectWallet = () => {
 };
 
 export default ConnectWallet;
-
-function configureWalletProvider(pr: string) {
-  if (!["MyAlgo", "WalletConnect"].includes(pr)) return;
-  loadReachWithOpts(loadStdlib, {
-    walletFallback: pr === "MyAlgo" ? { MyAlgoConnect } : { WalletConnect },
-    network: "TestNet",
-  });
-}
