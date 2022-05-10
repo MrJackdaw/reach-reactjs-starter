@@ -1,6 +1,6 @@
 {
   "name": "reach-react",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "private": true,
   "dependencies": {
     "@jackcom/raphsducks": "^1.1.6",
