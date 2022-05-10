@@ -5,6 +5,11 @@ type FlexContainerProps = {
   padded?: boolean;
 };
 
+export const ExLink = styled.a.attrs({
+  target: "_blank",
+  rel: "noopener noreferrer",
+})``;
+
 /** General-purpose default container */
 export const BaseContainer = styled.section``;
 
@@ -35,9 +40,28 @@ export const GridContainer = styled.div`
 `;
 
 export const PageContainer = styled(FlexColumn)`
+  justify-content: flex-start;
   margin: 0 auto;
-  min-height: 70vmax;
   max-width: 80vmin;
+  min-height: 70vmax;
+  text-align: left;
+
+  > h1,
+  > h2,
+  > h3,
+  > h4,
+  > h5,
+  > h6 {
+    margin: 0.5rem 0;
+  }
+
+  > hr {
+    background-color: ${({ theme }) => theme.colors.primary};
+    border: 0;
+    height: 1px;
+    margin: 1.5rem 0;
+    opacity: 0.6;
+  }
 `;
 
 export const Figure = styled.figure`

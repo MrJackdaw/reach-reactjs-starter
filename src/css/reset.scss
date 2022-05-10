@@ -99,6 +99,14 @@ input[type=text] {
 	border-bottom: 1px solid;
 }
 
+pre,
+code{
+	background-color: #0003;
+	font-family: monospace;
+	font-weight: bolder;
+	padding: 0 0.2rem;
+}
+
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
