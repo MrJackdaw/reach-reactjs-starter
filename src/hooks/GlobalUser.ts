@@ -1,21 +1,34 @@
 import { useEffect, useState } from "react";
 import store from "state";
 
+/**
+ * Listen for specific `User` data from global state. You can modify this,
+ * or remove the file/directory if you don't need it.
+ * @returns User data
+ */
 export function useGlobalUser() {
   const gState = store.getState();
-  const [user, setUser] = useState(gState.address);
-  const [account, setAccount] = useState<typeof gState["account"]>();
-  const [assets, setAssets] = useState<typeof gState["assets"]>();
-  const onAppState = (s: Partial<typeof gState>) => {
-    if (s.address) setUser(s.address);
-    if (s.account) setAccount(s.account);
-    if (s.assets) setAssets(s.assets);
-  };
+  type S = Partial<typeof gState>;
+
+  const [state, setState] = useState({
+    address: gState.address,
+    account: gState.account,
+    assets: gState.assets,
+    loading: gState.loading,
+    error: gState.error,
+  });
+  const onAppState = (s: S) => setState((prev) => ({ ...prev, ...s }));
+  const userKeys: (keyof S)[] = [
+    "address",
+    "account",
+    "assets",
+    "loading",
+    "error",
+  ];
 
   // Subscribe to global state, and unsubscribe on component unmount
-  useEffect(() =>
-    store.subscribeToKeys(onAppState, ["address", "account", "assets"])
-  );
+  useEffect(() => store.subscribeToKeys(onAppState, userKeys), []);
 
-  return { user, account, assets };
+  const updates = { ...state };
+  return updates;
 }

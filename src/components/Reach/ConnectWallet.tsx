@@ -5,24 +5,22 @@ import {
   checkSessionExists,
 } from "@jackcom/reachduck";
 // Views
-import store, { resetNotifications, updateNotification } from "state";
-import { ConnectionPropKeys, ConnectionProps } from "types/shared";
+import { resetNotifications, updateNotification } from "state";
 import Button, { WideButton } from "components/Forms/Button";
 import Modal from "components/Common/Modal";
 import { FlexColumn } from "components/Common/Containers";
 import { connect, reconnect } from "reach";
+import { useGlobalUser } from "hooks/GlobalUser";
 
 const ConnectWallet = () => {
-  const globalState = store.getState();
-  const { account } = globalState;
-  const [state, setState] = useState<ConnectionProps>({});
+  const { account, address, error, loading } = useGlobalUser();
   const [modal, showModal] = useState(false);
   const [connecting, setConnecting] = useState(false);
   const connectTo = async (prov: string) => {
     showModal(false);
-    setConnecting(true);
     if (!prov) return;
 
+    setConnecting(true);
     const alertId = resetNotifications("⏳ Connecting ... ", true);
     const acc = await connect(prov);
     const msg = acc ? "✅ Connected!" : "❌ Account Fetch error";
@@ -30,23 +28,19 @@ const ConnectWallet = () => {
     setConnecting(false);
   };
 
+  const resumeSession = async () => {
+    const alertId = resetNotifications("⏳ Reconnecting ... ");
+    await reconnect();
+    updateNotification(alertId, "✅ Connected!");
+  };
+
   useEffect(() => {
     const { exists } = checkSessionExists();
-    if (exists && !account) {
-      resetNotifications("⏳ Reconnecting ... ");
-      reconnect();
-    }
-
-    return store.subscribeToKeys(
-      (s) => setState((p) => ({ ...p, ...s })),
-      ConnectionPropKeys
-    );
+    if (exists && !account) resumeSession();
   }, []);
 
   if (account)
-    return (
-      <Button onClick={disconnectUser}>{truncateString(state.address!)}</Button>
-    );
+    return <Button onClick={disconnectUser}>{truncateString(address)}</Button>;
 
   if (connecting)
     return (
@@ -57,14 +51,14 @@ const ConnectWallet = () => {
 
   return (
     <>
-      {state.error ? (
+      {error ? (
         <Button onClick={() => window.location.reload()}>
           <span className="material-icons">close</span>
           Connect Error
         </Button>
       ) : (
         <Button onClick={() => showModal(true)}>
-          {state.loading ? (
+          {loading ? (
             <span className="spinner--before">Loading ...</span>
           ) : (
             "Connect Wallet"

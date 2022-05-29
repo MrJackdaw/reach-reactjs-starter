@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
 import styled from "styled-components";
-import store from "state";
+import useGlobalNotifications from "hooks/GlobalNotifications";
 import { FlexColumn } from "./Common/Containers";
 import { AutoDismissNotification } from "./Common/Notifications";
 
@@ -23,15 +22,7 @@ const NotificationGroup = styled(FlexColumn)`
 `;
 
 const ActiveNotifications = styled(() => {
-  const { notifications } = store.getState();
-  const [msgs, setMsgs] = useState([...notifications]);
-  const onNotification = (n: any) => {
-    const newnotes = n.notifications.slice(-10);
-    setMsgs(newnotes);
-  };
-
-  useEffect(() => store.subscribeToKeys(onNotification, ["notifications"]));
-
+  const { lastTenNotifications: msgs } = useGlobalNotifications();
   if (!msgs.length) return <></>;
 
   return (
