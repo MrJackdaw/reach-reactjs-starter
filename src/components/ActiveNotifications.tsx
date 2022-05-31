@@ -2,6 +2,7 @@ import styled from "styled-components";
 import useGlobalNotifications from "hooks/GlobalNotifications";
 import { FlexColumn } from "./Common/Containers";
 import { AutoDismissNotification } from "./Common/Notifications";
+import { Alert } from "state";
 
 const NotificationGroup = styled(FlexColumn)`
   bottom: 1rem;
@@ -24,11 +25,16 @@ const NotificationGroup = styled(FlexColumn)`
 const ActiveNotifications = styled(() => {
   const { lastTenNotifications: msgs } = useGlobalNotifications();
   if (!msgs.length) return <></>;
+  const timeout = (m: Alert) => (m.error ? 30000 : 5000);
 
   return (
     <NotificationGroup>
       {msgs.map((m) => (
-        <AutoDismissNotification notification={m} key={m.time} timeout={3000} />
+        <AutoDismissNotification
+          key={m.time}
+          notification={m}
+          timeout={timeout(m)}
+        />
       ))}
     </NotificationGroup>
   );

@@ -5,7 +5,7 @@ import {
   checkSessionExists,
 } from "@jackcom/reachduck";
 // Views
-import { resetNotifications, updateNotification } from "state";
+import { resetNotifications, updateAsError, updateNotification } from "state";
 import Button, { WideButton } from "components/Forms/Button";
 import Modal from "components/Common/Modal";
 import { FlexColumn } from "components/Common/Containers";
@@ -21,10 +21,15 @@ const ConnectWallet = () => {
     if (!prov) return;
 
     setConnecting(true);
-    const alertId = resetNotifications("⏳ Connecting ... ", true);
-    const acc = await connect(prov);
-    const msg = acc ? "✅ Connected!" : "❌ Account Fetch error";
-    updateNotification(alertId, msg);
+
+    try {
+      await connect(prov);
+      const alertId = resetNotifications("⏳ Connecting ... ", true);
+      updateNotification(alertId, "✅ Connected!");
+    } catch (e: any) {
+      updateAsError(null, "❌ Account Fetch error");
+    }
+
     setConnecting(false);
   };
 
