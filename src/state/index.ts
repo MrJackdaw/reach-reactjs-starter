@@ -1,8 +1,7 @@
 import createState from "@jackcom/raphsducks";
 import { NETWORKS } from "@jackcom/reachduck";
 
-/** Your global application state. Add any properties you need here */
-const store = createState({
+const initialState = {
   appsCount: 0,
 
   globalCount: 0,
@@ -33,8 +32,12 @@ const store = createState({
   error: "",
 
   /** Loading state */
-  loading: false,
-});
+  loading: false
+};
+
+type GState = typeof initialState;
+/** Your global application state. Add any properties you need here */
+const store = createState(initialState);
 
 export default store;
 
@@ -71,7 +74,10 @@ export function resetNotifications(msg?: string, persist = false) {
   return msgId;
 }
 
-export function removeNotification(msg: Alert, additional = {}) {
+export function removeNotification(
+  msg: Alert,
+  additional: Partial<GState> = {}
+) {
   const { notifications } = store.getState();
   const i = notifications.findIndex((n) => n.time === msg.time);
   if (i === -1) return;
@@ -81,7 +87,11 @@ export function removeNotification(msg: Alert, additional = {}) {
   store.multiple({ notifications: updates, ...additional });
 }
 
-export function updateAsError(id: number | null, msg: string, additional = {}) {
+export function updateAsError(
+  id: number | null,
+  msg: string,
+  additional: Partial<GState> = {}
+) {
   const { notifications } = store.getState();
   const msgIndex = notifications.findIndex(({ time }) => time === id);
   const newAlert = createAlert(msg, true);
@@ -99,7 +109,7 @@ export function updateNotification(
   id: number | null,
   msg: string,
   persist = false,
-  additional = {}
+  additional: Partial<GState> = {}
 ) {
   const { notifications } = store.getState();
   const i = notifications.findIndex(({ time }) => time === id);

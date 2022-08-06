@@ -1,6 +1,6 @@
 import Button from "components/Forms/Button";
-import styled from "styled-components";
-import { FlexColumn, FlexRow } from "./Containers";
+import styled, { css } from "styled-components";
+import { FlexColumn, GridContainer, MatIcon } from "./Containers";
 
 const ModalContainer = styled(FlexColumn)`
   height: 100vh;
@@ -21,7 +21,26 @@ const ModalContainer = styled(FlexColumn)`
   }
 `;
 
+const contentBoundary = css`
+  width: 50vw;
+  min-width: 300px;
+`;
+
+const ModalTitle = styled(GridContainer).attrs({
+  columns: "auto min-content"
+})`
+  ${contentBoundary}
+  margin-bottom: 0.4rem;
+
+  .title {
+    flex-grow: 1;
+    line-height: 2.6rem;
+    text-align: left;
+  }
+`;
+
 const ModalContents = styled(FlexColumn).attrs({ padded: true })`
+  ${contentBoundary}
   background: #fff;
   border-radius: ${({ theme }) => theme.presets.rounded.default};
   box-shadow: ${({ theme }) => theme.presets.elevated.sm};
@@ -29,13 +48,7 @@ const ModalContents = styled(FlexColumn).attrs({ padded: true })`
   height: 50vmin;
   overflow-y: auto;
   overflow-x: hidden;
-  width: 50vw;
-  min-width: 300px;
-
-  .title {
-    flex-grow: 1;
-    text-align: left;
-  }
+  place-content: center;
 `;
 
 type ModalProps = {
@@ -48,12 +61,14 @@ const Modal = (p: ModalProps) => {
 
   return (
     <ModalContainer>
-      <ModalContents>
-        <FlexRow>
-          {title && <h1 className="title h4">{title}</h1>}
-          <Button onClick={onClose}>close</Button>
-        </FlexRow>
+      <ModalTitle>
+        {title && <h1 className="title h4">{title}</h1>}
+        <Button onClick={onClose}>
+          <MatIcon icon="close" />
+        </Button>
+      </ModalTitle>
 
+      <ModalContents className="slide-down-fade-in">
         <div>{children}</div>
       </ModalContents>
     </ModalContainer>

@@ -4,11 +4,11 @@
   "private": true,
   "dependencies": {
     "@jackcom/raphsducks": "^2.0.1",
-    "@jackcom/reachduck": "^0.4.0",
+    "@jackcom/reachduck": "^0.4.3",
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
     "@randlabs/myalgo-connect": "^1.1.3",
-    "@reach-sh/stdlib": "^0.1.11-rc.2",
+    "@reach-sh/stdlib": "^0.1.11-rc.6",
     "cryptocurrency-icons": "^0.18.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",

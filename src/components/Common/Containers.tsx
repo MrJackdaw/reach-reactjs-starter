@@ -7,7 +7,7 @@ type FlexContainerProps = {
 
 export const ExLink = styled.a.attrs({
   target: "_blank",
-  rel: "noopener noreferrer",
+  rel: "noopener noreferrer"
 })``;
 
 /** General-purpose default container */
@@ -34,8 +34,9 @@ export const Code = styled.code`
   padding: ${({ theme }) => theme.sizes.sm};
 `;
 
-export const GridContainer = styled.div`
+export const GridContainer = styled.div<{ columns?: string }>`
   display: grid;
+  grid-template-columns: ${({ columns = "auto auto" }) => columns};
   grid-gap: 0;
 `;
 
@@ -89,3 +90,6 @@ export const DataColumn = styled(FlexColumn)`
   text-align: left;
   width: 50%;
 `;
+
+const Icon = styled.span.attrs({ className: "material-icons" })``;
+export const MatIcon = ({ icon }: { icon: string }) => <Icon>{icon}</Icon>;

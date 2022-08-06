@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import {
   disconnectUser,
   truncateString,
-  checkSessionExists,
+  checkSessionExists
 } from "@jackcom/reachduck";
 // Views
 import { resetNotifications, updateAsError, updateNotification } from "state";
@@ -11,6 +11,12 @@ import Modal from "components/Common/Modal";
 import { FlexColumn } from "components/Common/Containers";
 import { connect, reconnect } from "reach";
 import { useGlobalUser } from "hooks/GlobalUser";
+
+const providers = [
+  { name: "My Algo", value: "MyAlgo" },
+  { name: "Pera Wallet", value: "PeraConnect" },
+  { name: "WalletConnect", value: "WalletConnect" }
+];
 
 const ConnectWallet = () => {
   const { account, address, error, loading } = useGlobalUser();
@@ -27,7 +33,8 @@ const ConnectWallet = () => {
       const alertId = resetNotifications("⏳ Connecting ... ", true);
       updateNotification(alertId, "✅ Connected!");
     } catch (e: any) {
-      updateAsError(null, "❌ Account Fetch error");
+      const err = "❌ Account Fetch error";
+      updateAsError(null, err, { error: err });
     }
 
     setConnecting(false);
@@ -74,13 +81,11 @@ const ConnectWallet = () => {
       {modal && (
         <Modal title="Select Wallet Provider" onClose={() => showModal(false)}>
           <FlexColumn style={{ alignSelf: "stretch", placeContent: "center" }}>
-            <WideButton onClick={() => connectTo("MyAlgo")}>
-              <b>MyAlgo wallet</b>
-            </WideButton>
-
-            <WideButton onClick={() => connectTo("WalletConnect")}>
-              <b>WalletConnect</b>
-            </WideButton>
+            {providers.map((p) => (
+              <WideButton key={p.value} onClick={() => connectTo(p.value)}>
+                <b>{p.name}</b>
+              </WideButton>
+            ))}
           </FlexColumn>
         </Modal>
       )}

@@ -1,7 +1,7 @@
 import store, {
   addNotification,
   updateAsError,
-  updateNotification,
+  updateNotification
 } from "state";
 import {
   connectUser,
@@ -11,11 +11,13 @@ import {
   tokenMetadata as getReachToken,
   optInToAsset,
   loadReachWithOpts,
+  ReachEnvOpts
 } from "@jackcom/reachduck";
 import { ReachAccount, ReachToken } from "@jackcom/reachduck/lib/types";
 import {
   loadStdlib,
   ALGO_WalletConnect as WalletConnect,
+  ALGO_PeraConnect as PeraWallet
 } from "@reach-sh/stdlib";
 import MyAlgoConnect from "@randlabs/myalgo-connect";
 
@@ -30,7 +32,11 @@ export async function connect(provider: string) {
 /** Reconnect user session */
 export async function reconnect() {
   const { addr = undefined, isWCSession } = checkSessionExists();
-  configureWalletProvider(isWCSession ? "WalletConnect" : "MyAlgo");
+  if (isWCSession) {
+    debugger;
+    configureWalletProvider(isWCSession ? "WalletConnect" : "MyAlgo");
+    // PeraConnect
+  } else configureWalletProvider("MyAlgo");
   const updates = await reconnectUser(addr);
   store.multiple(updates);
   return updates.account;
@@ -53,7 +59,7 @@ export async function inlineAssetOptIn(
 
   const [asset, accepted] = await Promise.all([
     tokenMetadata(tokenId, acc),
-    optInToAsset(acc, tokenId),
+    optInToAsset(acc, tokenId)
   ]);
 
   if (accepted) {
@@ -86,12 +92,22 @@ export async function checkHasToken(token: any) {
 
 /** Initialize the `stdlib` instance according to the wallet provider. */
 function configureWalletProvider(pr: string) {
-  if (!["WalletConnect", "MyAlgo"].includes(pr)) return;
+  if (!["WalletConnect", "PeraConnect", "MyAlgo"].includes(pr)) return;
+  const opts: ReachEnvOpts = { network: "TestNet" };
 
-  const fallback = pr === "MyAlgo" ? { MyAlgoConnect } : { WalletConnect };
+  switch (pr) {
+    case "PeraConnect": {
+      opts.walletFallback = { WalletConnect: PeraWallet };
+      break;
+    }
+    case "WalletConnect": {
+      opts.walletFallback = { WalletConnect };
+      break;
+    }
+    default:
+      opts.walletFallback = { MyAlgoConnect };
+      break;
+  }
 
-  loadReachWithOpts(loadStdlib, {
-    walletFallback: fallback,
-    network: "TestNet",
-  });
+  loadReachWithOpts(loadStdlib, opts);
 }
