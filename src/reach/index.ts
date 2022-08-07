@@ -4,6 +4,8 @@ import store, {
   updateNotification
 } from "state";
 import {
+  ReachAccount,
+  ReachToken,
   connectUser,
   checkSessionExists,
   reconnectUser,
@@ -13,7 +15,6 @@ import {
   loadReachWithOpts,
   ReachEnvOpts
 } from "@jackcom/reachduck";
-import { ReachAccount, ReachToken } from "@jackcom/reachduck/lib/types";
 import {
   loadStdlib,
   ALGO_WalletConnect as WalletConnect,
