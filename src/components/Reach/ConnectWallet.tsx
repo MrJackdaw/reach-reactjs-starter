@@ -14,7 +14,6 @@ import { useGlobalUser } from "hooks/GlobalUser";
 
 const providers = [
   { name: "My Algo", value: "MyAlgo" },
-  { name: "Pera Wallet", value: "PeraConnect" },
   { name: "WalletConnect", value: "WalletConnect" }
 ];
 
