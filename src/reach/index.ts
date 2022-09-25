@@ -17,8 +17,7 @@ import {
 } from "@jackcom/reachduck";
 import {
   loadStdlib,
-  ALGO_WalletConnect as WalletConnect,
-  ALGO_PeraConnect as PeraWallet
+  ALGO_WalletConnect as WalletConnect
 } from "@reach-sh/stdlib";
 import MyAlgoConnect from "@randlabs/myalgo-connect";
 
@@ -93,14 +92,10 @@ export async function checkHasToken(token: any) {
 
 /** Initialize the `stdlib` instance according to the wallet provider. */
 function configureWalletProvider(pr: string) {
-  if (!["WalletConnect", "PeraConnect", "MyAlgo"].includes(pr)) return;
+  if (!["WalletConnect", "MyAlgo"].includes(pr)) return;
   const opts: ReachEnvOpts = { network: "TestNet" };
 
   switch (pr) {
-    case "PeraConnect": {
-      opts.walletFallback = { WalletConnect: PeraWallet };
-      break;
-    }
     case "WalletConnect": {
       opts.walletFallback = { WalletConnect };
       break;
