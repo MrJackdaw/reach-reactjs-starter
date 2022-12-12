@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import store from "state";
+import { counter } from "state";
 
 /**
  * This is ABSOLUTELY an example hook. You can modify or remove it if
@@ -13,14 +13,14 @@ import store from "state";
  * @returns An object with a `globalCount` (and whatever else you want)
  */
 export function useGlobalCount() {
-  const gState = store.getState();
+  const gState = counter.getState();
   const [count, setCount] = useState(gState.globalCount);
-  const onAppState = (s: Partial<typeof gState>) => {
+  const onCounter = (s: Partial<typeof gState>) => {
     if (s.globalCount) setCount(s.globalCount);
   };
 
   // Subscribe to global state, and unsubscribe on component unmount
-  useEffect(() => store.subscribeToKeys(onAppState, ["globalCount"]), []);
+  useEffect(() => counter.subscribeToKeys(onCounter, ["globalCount"]), []);
 
   return { globalCount: count };
 }

@@ -1,9 +1,12 @@
 import { useGlobalCount } from "hooks/GlobalCount";
-import store from "state";
+import { counter } from "state";
 import Button from "./Forms/Button";
 
 const GlobalCountButton = () => {
   const { globalCount } = useGlobalCount();
+  const incGlobalState = () => {
+    counter.globalCount(counter.getState().globalCount + 1);
+  };
 
   return (
     <Button onClick={incGlobalState}>
@@ -15,7 +18,3 @@ const GlobalCountButton = () => {
 export default GlobalCountButton;
 
 // Update global state property
-function incGlobalState(): void {
-  const { globalCount } = store.getState();
-  store.globalCount(globalCount + 1);
-}
