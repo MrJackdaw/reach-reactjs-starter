@@ -37,6 +37,7 @@ const Demo = () => {
         </p>
 
         <GlobalCountButton />
+        <GlobalCountButton />
       </GlobalCount>
     </PageContainer>
   );

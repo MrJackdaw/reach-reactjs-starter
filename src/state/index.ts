@@ -4,8 +4,6 @@ import { NETWORKS } from "@jackcom/reachduck";
 const initialState = {
   appsCount: 0,
 
-  globalCount: 0,
-
   initialized: false,
 
   /** Notifications */
@@ -37,9 +35,11 @@ const initialState = {
 
 type GState = typeof initialState;
 /** Your global application state. Add any properties you need here */
-const store = createState(initialState);
+const store = createState<GState>(initialState);
 
 export default store;
+
+export const counter = createState({ globalCount: 0 });
 
 export type Alert = {
   msg: string;

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import store from "state/index";
+import { counter } from "state/index";
 import "./HelloWorld.scss";
 
 export default function HelloWorld() {
   const [state, setState] = useState({ counter: 0 });
-  const { globalCount } = store.getState();
-  const incGlobalCount = () => store.globalCount(globalCount + 1);
+  const { globalCount } = counter.getState();
+  const incGlobalCount = () => counter.globalCount(globalCount + 1);
   const incLocalCount = () =>
     setState((s) => ({ ...s, counter: s.counter + 1 }));
 
