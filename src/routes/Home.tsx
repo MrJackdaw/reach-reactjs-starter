@@ -1,4 +1,3 @@
-import { Face } from "@material-ui/icons";
 import { ExLink, PageContainer } from "components/Common/Containers";
 import GlobalCountButton from "components/GlobalCountButton";
 import { Fragment } from "react";
@@ -42,7 +41,7 @@ const Home = () => (
     <p>
       This project supports <b>Typescript</b>, <b>SASS/SCSS</b>, and{" "}
       <b>Material Icons</b>
-      <Face />
+      <span className="material-icons">face</span>
     </p>
     <hr />
     <h3 className="h4">Application State</h3>
