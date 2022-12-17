@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Alert, removeNotification } from "state";
 import styled from "styled-components";
 import { noOp } from "utils";
 import { FlexRow } from "./Containers";
 
 const Wrapper = styled(FlexRow)`
-  background-color: ${({ theme }) => theme.colors.bgColor};
+  background-color: ${({ theme }) => theme.colors.accent};
   border-radius: ${({ theme }) => theme.presets.rounded};
   box-shadow: ${({ theme }) => theme.presets.elevated.md};
   margin-bottom: ${({ theme }) => theme.sizes.xs};
@@ -31,12 +31,18 @@ const ClearNotification = styled((p: NotificationProps) => (
 
 const Notification = styled((props: NotificationProps) => {
   const { error, notification, onClear = noOp } = props;
+  const msg = useMemo(() => {
+    if (typeof notification === "string") return notification;
+    if ((notification as Alert).msg) return notification?.msg;
+    return "";
+
+  }, [])
 
   return (
     <Wrapper className={props.className}>
       <ClearNotification onClear={onClear} />
       {error && <b className="label">Error:&nbsp;</b>}
-      <span>{notification}</span>
+      <span>{msg}</span>
     </Wrapper>
   );
 })``;

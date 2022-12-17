@@ -6,10 +6,10 @@ import { Alert } from "state";
 
 const NotificationGroup = styled(FlexColumn)`
   bottom: 1rem;
+  height: 40vmin;
   height: auto;
   left: 50%;
   margin: 0 auto 0 -300px;
-  height: 40vmin;
   max-width: 600px;
   overflow: hidden auto;
   padding: ${({ theme }) => theme.sizes.sm};

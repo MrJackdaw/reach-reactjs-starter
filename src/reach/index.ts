@@ -20,6 +20,7 @@ import {
   ALGO_WalletConnect as WalletConnect
 } from "@reach-sh/stdlib";
 import MyAlgoConnect from "@randlabs/myalgo-connect";
+import PeraConnect from "utils/WC/PeraConnect";
 
 /** Connect user Wallet */
 export async function connect(provider: string) {
@@ -92,12 +93,16 @@ export async function checkHasToken(token: any) {
 
 /** Initialize the `stdlib` instance according to the wallet provider. */
 function configureWalletProvider(pr: string) {
-  if (!["WalletConnect", "MyAlgo"].includes(pr)) return;
+  if (!["WalletConnect", "PeraConnect", "MyAlgo"].includes(pr)) return;
   const opts: ReachEnvOpts = { network: "TestNet" };
 
   switch (pr) {
     case "WalletConnect": {
       opts.walletFallback = { WalletConnect };
+      break;
+    }
+    case "PeraConnect": {
+      opts.walletFallback = { WalletConnect: PeraConnect };
       break;
     }
     default:
