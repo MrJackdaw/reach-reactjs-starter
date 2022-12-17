@@ -1,8 +1,8 @@
-import { version } from "../../package.json";
+import manifest from "../../package.json";
 
 export const noOp = () => null;
 
-export const APP_VERSION = version;
+export const APP_VERSION = manifest.version;
 const APP_VERSION_KEY = "app-version";
 
 /** App Migration helper: check if your app version has changed */

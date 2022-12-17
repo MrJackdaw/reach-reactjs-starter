@@ -91,5 +91,19 @@ export const DataColumn = styled(FlexColumn)`
   width: 50%;
 `;
 
+export const Section = styled(FlexColumn)`
+  align-items: flex-start;
+  min-height: 60vh;
+  place-content: center;
+
+  hr {
+    background-color: ${({ theme }) => theme.colors.accent};
+    border: 0;
+    height: 1px;
+    margin: 2rem 0;
+    opacity: 0.7;
+  }
+`;
+
 const Icon = styled.span.attrs({ className: "material-icons" })``;
 export const MatIcon = ({ icon }: { icon: string }) => <Icon>{icon}</Icon>;

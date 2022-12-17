@@ -1,6 +1,9 @@
 import createState from "@jackcom/raphsducks";
 import { NETWORKS } from "@jackcom/reachduck";
 
+/**
+ * This is your state definition. Add any properties you need here.
+ */
 const initialState = {
   appsCount: 0,
 
@@ -33,12 +36,18 @@ const initialState = {
   loading: false
 };
 
-type GState = typeof initialState;
-/** Your global application state. Add any properties you need here */
-const store = createState<GState>(initialState);
-
+/**
+ * Your global application state `instance`. Every property in `initialState`
+ * will become a method the state `instance`, so e.g. to update `appsCount`, you
+ * call `store.appsCount( number )`. You can create as many state instances as
+ * you need.
+ */
+const store = createState(initialState);
 export default store;
 
+export type GlobalStore = ReturnType<typeof store.getState>;
+
+/** A global counter state. Used to demo the "global count" button */
 export const counter = createState({ globalCount: 0 });
 
 export type Alert = {
@@ -76,7 +85,7 @@ export function resetNotifications(msg?: string, persist = false) {
 
 export function removeNotification(
   msg: Alert,
-  additional: Partial<GState> = {}
+  additional: Partial<GlobalStore> = {}
 ) {
   const { notifications } = store.getState();
   const i = notifications.findIndex((n) => n.time === msg.time);
@@ -90,7 +99,7 @@ export function removeNotification(
 export function updateAsError(
   id: number | null,
   msg: string,
-  additional: Partial<GState> = {}
+  additional: Partial<GlobalStore> = {}
 ) {
   const { notifications } = store.getState();
   const msgIndex = notifications.findIndex(({ time }) => time === id);
@@ -109,7 +118,7 @@ export function updateNotification(
   id: number | null,
   msg: string,
   persist = false,
-  additional: Partial<GState> = {}
+  additional: Partial<GlobalStore> = {}
 ) {
   const { notifications } = store.getState();
   const i = notifications.findIndex(({ time }) => time === id);
