@@ -2,8 +2,10 @@
 
 ## What is it? 
 
-Inspired by [@zetsuboii's starter pack](https://github.com/Zetsuboii/reach-react-starter). This is a quick scaffold/template for building a `ReactJS` and `Reach Lang` DApp. The development env and build process are handled by **webpack**.\
+This is a quick scaffold/template for building a `ReactJS` and `Reach Lang` DApp. The development env and build process are handled by **webpack**.\
 If you need to add or modify Webpack config overrides, consider using [@craco](https://github.com/gsoft-inc/craco/blob/master/packages/craco/README.md#installation)
+
+Inspired by [@zetsuboii's starter pack](), which has been pulled from circulation. 
 
 ## What does it contain? 
 
@@ -19,7 +21,7 @@ If you need to add or modify Webpack config overrides, consider using [@craco](h
 ---
 ## How do I use it?
 
-1. Clone the project
+1. Clone (or fork) the project
 2. `cd path/to/my-project`
 3. `rm -rf .git && git init` (create a fresh git repository for your project)
 4. `npm install` 
@@ -38,7 +40,7 @@ This project includes some helpful bits, including
 
 ---
 ## Additional Notes
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). It does not use any `react-script` or `webpack` configuration overrides. 
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). It uses `react-scripts-rewired` for React 18 polyfills. 
 
 ### Reach CLI
 **Note:** If you don't have the `reach` compiler installed, run this in your project directory to download it (and make the downloaded item executable)
