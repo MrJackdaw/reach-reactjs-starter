@@ -5,7 +5,7 @@ import { noOp } from "utils";
 import { FlexRow } from "./Containers";
 
 const Wrapper = styled(FlexRow)`
-  background-color: ${({ theme }) => theme.colors.bgColor};
+  background-color: ${({ theme }) => theme.colors.accent};
   border-radius: ${({ theme }) => theme.presets.rounded};
   box-shadow: ${({ theme }) => theme.presets.elevated.md};
   margin-bottom: ${({ theme }) => theme.sizes.xs};

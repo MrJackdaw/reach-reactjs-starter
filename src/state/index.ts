@@ -46,6 +46,7 @@ const store = createState(initialState);
 export default store;
 
 export type GlobalStore = ReturnType<typeof store.getState>;
+export type GlobalStoreKey = keyof GlobalStore;
 
 /** A global counter state. Used to demo the "global count" button */
 export const counter = createState({ globalCount: 0 });

@@ -14,6 +14,7 @@ import { useGlobalUser } from "hooks/GlobalUser";
 
 const providers = [
   { name: "My Algo", value: "MyAlgo" },
+  { name: "Pera Wallet", value: "PeraConnect" },
   { name: "WalletConnect", value: "WalletConnect" }
 ];
 
@@ -32,6 +33,7 @@ const ConnectWallet = () => {
       const alertId = resetNotifications("⏳ Connecting ... ", true);
       updateNotification(alertId, "✅ Connected!");
     } catch (e: any) {
+      // console.log(e)
       const err = "❌ Account Fetch error";
       updateAsError(null, err, { error: err });
     }
@@ -50,7 +52,7 @@ const ConnectWallet = () => {
     if (exists && !account) resumeSession();
   }, []);
 
-  if (account)
+  if (address)
     return <Button onClick={disconnectUser}>{truncateString(address)}</Button>;
 
   if (connecting)
