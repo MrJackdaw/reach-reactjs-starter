@@ -15,12 +15,15 @@ import {
   loadReachWithOpts,
   ReachEnvOpts
 } from "@jackcom/reachduck";
+import { PeraWalletConnect } from "@perawallet/connect";
 import {
   loadStdlib,
-  ALGO_WalletConnect as WalletConnect
+  ALGO_MakePeraConnect,
+  ALGO_MakeWalletConnect
 } from "@reach-sh/stdlib";
+import WalletConnect from "utils/WC/WCAudio";
+import AlgoQRModal from "algorand-walletconnect-qrcode-modal";
 import MyAlgoConnect from "@randlabs/myalgo-connect";
-import PeraConnect from "utils/WC/PeraConnect";
 
 /** Connect user Wallet */
 export async function connect(provider: string) {
@@ -98,17 +101,19 @@ function configureWalletProvider(pr: string) {
 
   switch (pr) {
     case "WalletConnect": {
-      opts.walletFallback = { WalletConnect };
-      break;
+      opts.walletFallback = {
+        WalletConnect: ALGO_MakeWalletConnect(WalletConnect, AlgoQRModal)
+      };
+      return loadReachWithOpts(loadStdlib, opts);
     }
     case "PeraConnect": {
-      opts.walletFallback = { WalletConnect: PeraConnect };
-      break;
+      opts.walletFallback = {
+        WalletConnect: ALGO_MakePeraConnect(PeraWalletConnect)
+      };
+      return loadReachWithOpts(loadStdlib, opts);
     }
     default:
       opts.walletFallback = { MyAlgoConnect };
-      break;
+      return loadReachWithOpts(loadStdlib, opts);
   }
-
-  loadReachWithOpts(loadStdlib, opts);
 }
