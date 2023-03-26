@@ -15,15 +15,11 @@ import {
   loadReachWithOpts,
   ReachEnvOpts
 } from "@jackcom/reachduck";
-import { PeraWalletConnect } from "@perawallet/connect";
-import {
-  loadStdlib,
-  ALGO_MakePeraConnect,
-  ALGO_MakeWalletConnect
-} from "@reach-sh/stdlib";
+import { loadStdlib, ALGO_MakeWalletConnect } from "@reach-sh/stdlib";
 import WalletConnect from "utils/WC/WCAudio";
 import AlgoQRModal from "algorand-walletconnect-qrcode-modal";
 import MyAlgoConnect from "@randlabs/myalgo-connect";
+import MakePeraConnect from "utils/WC/PeraWCClient";
 
 /** Connect user Wallet */
 export async function connect(provider: string) {
@@ -49,6 +45,8 @@ export async function reconnect() {
 /** Dissconnect user session */
 export async function disconnect() {
   store.reset();
+  const { walletClient } = store.getState();
+  if (walletClient) walletClient.disconnect();
   addNotification("Disconnecting ... ");
   disconnectUser();
 }
@@ -98,19 +96,24 @@ export async function checkHasToken(token: any) {
 function configureWalletProvider(pr: string) {
   if (!["WalletConnect", "PeraConnect", "MyAlgo"].includes(pr)) return;
   const opts: ReachEnvOpts = { network: "TestNet" };
+  const loadWalletClient = (client: { disconnect(): any }) => {
+    opts.walletFallback = {
+      WalletConnect: function _makeFallback() {
+        store.walletClient(client);
+        return client;
+      }
+    };
+    return loadReachWithOpts(loadStdlib, opts);
+  };
 
   switch (pr) {
     case "WalletConnect": {
-      opts.walletFallback = {
-        WalletConnect: ALGO_MakeWalletConnect(WalletConnect, AlgoQRModal)
-      };
-      return loadReachWithOpts(loadStdlib, opts);
+      const WalletClient = ALGO_MakeWalletConnect(WalletConnect, AlgoQRModal);
+      return loadWalletClient(new WalletClient());
     }
     case "PeraConnect": {
-      opts.walletFallback = {
-        WalletConnect: ALGO_MakePeraConnect(PeraWalletConnect)
-      };
-      return loadReachWithOpts(loadStdlib, opts);
+      const WalletClient = MakePeraConnect();
+      return loadWalletClient(new WalletClient());
     }
     default:
       opts.walletFallback = { MyAlgoConnect };

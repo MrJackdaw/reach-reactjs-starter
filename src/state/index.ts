@@ -33,7 +33,9 @@ const initialState = {
   error: "",
 
   /** Loading state */
-  loading: false
+  loading: false,
+
+  walletClient: null as { disconnect(): any } | null
 };
 
 /**
