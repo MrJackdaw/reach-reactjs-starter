@@ -1,5 +1,9 @@
 # React + Reach Application Scaffold
 
+> [!NOTE]
+> This repository was archived and became read-only in Feb. 2026. Please visit `https://reach.sh`
+> for up-to-date resources on creating blockchain applications using the Reach language.
+
 ## What is it? 
 
 This is a quick scaffold/template for building a `ReactJS` and `Reach Lang` DApp. The development env and build process are handled by **webpack**.\
